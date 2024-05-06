@@ -2,7 +2,7 @@ library ieee;
 
 use ieee.std_logic_1164.all;
 
-entity top_chatter is
+entity c_chatter is
 generic (
     width: natural
 );
@@ -11,9 +11,9 @@ port (
     cl: in  std_logic;
     q:  out std_logic
 );
-end entity top_chatter;
+end entity c_chatter;
 
-architecture rtl of top_chatter is
+architecture rtl of c_chatter is
 begin
     process (d, cl) is
         variable v_tmp: natural range 0 to 2 ** width - 1;
