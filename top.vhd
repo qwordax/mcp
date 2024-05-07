@@ -7,9 +7,9 @@ port (
     key:    in  std_logic_vector(3 downto 0);
     sw:     in  std_logic_vector(7 downto 0);
     cl:     in  std_logic;
-    led:    out std_logic_vector(11 downto 0)
---    sd_sg:  out std_logic_vector(7 downto 0);
---    sd_cs:  out std_logic_vector(7 downto 0);
+    led:    out std_logic_vector(11 downto 0);
+    sd_sg:  out std_logic_vector(7 downto 0);
+    sd_cs:  out std_logic_vector(7 downto 0)
 --    lcd_rs: out std_logic;
 --    lcd_rw: out std_logic;
 --    lcd_en: out std_logic;
@@ -60,10 +60,21 @@ architecture rtl of top is
     );
     end component top_ctrl;
 
+    component top_sd is
+    port (
+        d:  in  std_logic_vector(31 downto 0);
+        lh: in  std_logic;
+        cl: in  std_logic;
+        sg: out std_logic_vector(7 downto 0);
+        cs: out std_logic_vector(7 downto 0)
+    );
+    end component top_sd;
+
     signal s_key: std_logic_vector(3 downto 0);
     signal s_sw:  std_logic_vector(7 downto 0);
 
     signal s_cldiv: std_logic;
+    signal s_clsd:  std_logic;
 
     signal s_op: std_logic_vector(5 downto 0);
     signal s_rs: std_logic_vector(2 downto 0);
@@ -93,13 +104,22 @@ begin
         );
     end generate sw_ch;
 
-    div: component c_div
+    div0: component c_div
     generic map (
         divide => 12_500_000
     )
     port map (
         d => cl,
         q => s_cldiv
+    );
+
+    div1: component c_div
+    generic map (
+        divide => 10_000
+    )
+    port map (
+        d => cl,
+        q => s_clsd
     );
 
     ctrl: component top_ctrl
@@ -135,4 +155,13 @@ begin
     led(5 downto 0)  <= not s_op;
     led(8 downto 6)  <= not s_rs;
     led(11 downto 9) <= not s_rd;
+
+    sd: component top_sd
+    port map (
+        d  => "11110000111100110101010100001111",
+        lh => s_sw(0),
+        cl => s_clsd,
+        sg => sd_sg,
+        cs => sd_cs
+    );
 end architecture rtl;
