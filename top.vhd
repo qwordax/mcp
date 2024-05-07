@@ -60,13 +60,24 @@ architecture rtl of top is
     );
     end component top_ctrl;
 
+    component top_in is
+    port (
+        r:  in  std_logic;
+        s:  in  std_logic;
+        en: in  std_logic;
+        q:  out std_logic_vector(31 downto 0);
+        cs: out std_logic_vector(31 downto 0)
+    );
+    end component top_in;
+
     component top_sd is
     port (
-        d:  in  std_logic_vector(31 downto 0);
-        lh: in  std_logic;
-        cl: in  std_logic;
-        sg: out std_logic_vector(7 downto 0);
-        cs: out std_logic_vector(7 downto 0)
+        d:    in  std_logic_vector(31 downto 0);
+        d_cs: in  std_logic_vector(31 downto 0);
+        lh:   in  std_logic;
+        cl:   in  std_logic;
+        sg:   out std_logic_vector(7 downto 0);
+        cs:   out std_logic_vector(7 downto 0)
     );
     end component top_sd;
 
@@ -80,10 +91,15 @@ architecture rtl of top is
     signal s_rs: std_logic_vector(2 downto 0);
     signal s_rd: std_logic_vector(2 downto 0);
 
+    signal s_rs_en: std_logic;
+    signal s_rd_en: std_logic;
+    signal s_in_en: std_logic;
+
     signal s_d_in:  std_logic_vector(31 downto 0);
     signal s_d_out: std_logic_vector(31 downto 0);
 
-    signal s_sd_d: std_logic_vector(31 downto 0);
+    signal s_sd_d:  std_logic_vector(31 downto 0);
+    signal s_sd_cs: std_logic_vector(31 downto 0);
 begin
     key_ch: for i in 0 to 3 generate
         chatter: component c_chatter
@@ -135,6 +151,8 @@ begin
         q  => s_op
     );
 
+    s_rs_en <= s_key(2) and not s_sw(2);
+
     rs: component c_ctr
     generic map (
         width => 3
@@ -142,9 +160,11 @@ begin
     port map (
         r  => '0',
         cl => s_cldiv,
-        en => s_key(2),
+        en => s_rs_en,
         q  => s_rs
     );
+
+    s_rd_en <= s_key(3) and not s_sw(2);
 
     rd: component c_ctr
     generic map (
@@ -153,8 +173,19 @@ begin
     port map (
         r  => '0',
         cl => s_cldiv,
-        en => s_key(3),
+        en => s_rd_en,
         q  => s_rd
+    );
+
+    s_in_en <= s_sw(1) and s_sw(2);
+
+    input: component top_in
+    port map (
+        r  => s_key(2),
+        s  => s_key(3),
+        en => s_in_en,
+        q  => s_d_in,
+        cs => s_sd_cs
     );
 
     led(5 downto 0)  <= not s_op;
@@ -162,16 +193,16 @@ begin
     led(11 downto 9) <= not s_rd;
 
     s_d_out <= "11111111000000001111000011110000";
-    s_d_in  <= "11001100110011001010101001010101";
 
     s_sd_d <= s_d_out when s_sw(1) = '0' else s_d_in;
 
     sd: component top_sd
     port map (
-        d  => s_sd_d,
-        lh => s_sw(0),
-        cl => s_clsd,
-        sg => sd_sg,
-        cs => sd_cs
+        d    => s_sd_d,
+        d_cs => s_sd_cs,
+        lh   => s_sw(0),
+        cl   => s_clsd,
+        sg   => sd_sg,
+        cs   => sd_cs
     );
 end architecture rtl;

@@ -5,11 +5,12 @@ use ieee.std_logic_1164.all;
 
 entity top_sd is
 port (
-    d:  in  std_logic_vector(31 downto 0);
-    lh: in  std_logic;
-    cl: in  std_logic;
-    sg: out std_logic_vector(7 downto 0);
-    cs: out std_logic_vector(7 downto 0)
+    d:    in  std_logic_vector(31 downto 0);
+    d_cs: in  std_logic_vector(31 downto 0);
+    lh:   in  std_logic;
+    cl:   in  std_logic;
+    sg:   out std_logic_vector(7 downto 0);
+    cs:   out std_logic_vector(7 downto 0)
 );
 end entity top_sd;
 
@@ -37,6 +38,18 @@ architecture rtl of top_sd is
     );
     end component c_dc;
 
+    component c_div is
+    generic (
+        divide: natural
+    );
+    port (
+        d: in  std_logic;
+        q: out std_logic
+    );
+    end component c_div;
+
+    signal s_cl_div: std_logic;
+
     signal s_ctr_q: std_logic_vector(2 downto 0);
     signal s_sg:    std_logic_vector(7 downto 0);
     signal s_cs:    std_logic_vector(7 downto 0);
@@ -62,6 +75,15 @@ begin
         q  => s_cs
     );
 
+    div: component c_div
+    generic map (
+        divide => 12_50
+    )
+    port map (
+        d => cl,
+        q => s_cl_div
+    );
+
     process (s_ctr_q, lh) is
         variable v_ctr: natural;
     begin
@@ -69,11 +91,25 @@ begin
 
         if lh = '0' then
             s_sg(0) <= '0';
-            s_sg(1) <= d(2 * v_ctr);
-            s_sg(2) <= '1';
+
+            if d_cs(2 * v_ctr) = '1' then
+                s_sg(1) <= d(2 * v_ctr) and s_cl_div;
+                s_sg(2) <= s_cl_div;
+            else
+                s_sg(1) <= d(2 * v_ctr);
+                s_sg(2) <= '1';
+            end if;
+
             s_sg(3) <= '0';
-            s_sg(4) <= '1';
-            s_sg(5) <= d(2 * v_ctr + 1);
+
+            if d_cs(2 * v_ctr + 1) = '1' then
+                s_sg(4) <= s_cl_div;
+                s_sg(5) <= d(2 * v_ctr + 1) and s_cl_div;
+            else
+                s_sg(4) <= '1';
+                s_sg(5) <= d(2 * v_ctr + 1);
+            end if;
+
             s_sg(6) <= '0';
 
             if v_ctr < 4 then
@@ -83,11 +119,25 @@ begin
             end if;
         else
             s_sg(0) <= '0';
-            s_sg(1) <= d(16 + 2 * v_ctr);
-            s_sg(2) <= '1';
+
+            if d_cs(16 + 2 * v_ctr) = '1' then
+                s_sg(1) <= d(16 + 2 * v_ctr) and s_cl_div;
+                s_sg(2) <= s_cl_div;
+            else
+                s_sg(1) <= d(16 + 2 * v_ctr);
+                s_sg(2) <= '1';
+            end if;
+
             s_sg(3) <= '0';
-            s_sg(4) <= '1';
-            s_sg(5) <= d(16 + 2 * v_ctr + 1);
+
+            if d_cs(16 + 2 * v_ctr + 1) = '1' then
+                s_sg(4) <= s_cl_div;
+                s_sg(5) <= d(16 + 2 * v_ctr + 1) and s_cl_div;
+            else
+                s_sg(4) <= '1';
+                s_sg(5) <= d(16 + 2 * v_ctr + 1);
+            end if;
+
             s_sg(6) <= '0';
 
             if v_ctr >= 4 then
