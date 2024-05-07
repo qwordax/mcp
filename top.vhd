@@ -29,8 +29,31 @@ architecture rtl of top is
     );
     end component c_chatter;
 
+    component c_div is
+    generic (
+        divide: natural
+    );
+    port (
+        d: in  std_logic;
+        q: out std_logic
+    );
+    end component c_div;
+
+    component top_ctrl is
+    port (
+        u:  in  std_logic;
+        d:  in  std_logic;
+        cl: in  std_logic;
+        q:  out std_logic_vector(5 downto 0)
+    );
+    end component top_ctrl;
+
     signal s_key: std_logic_vector(3 downto 0);
     signal s_sw:  std_logic_vector(7 downto 0);
+
+    signal cl_ctrl: std_logic;
+
+    signal mcp_op: std_logic_vector(5 downto 0);
 begin
     key_ch0: for i in 0 to 3 generate
         chatter0: c_chatter
@@ -38,7 +61,7 @@ begin
             width => 20
         )
         port map (
-            d  => key(i),
+            d  => not key(i),
             cl => cl,
             q  => s_key(i)
         );
@@ -50,9 +73,26 @@ begin
             width => 4
         )
         port map (
-            d  => sw(i),
+            d  => not sw(i),
             cl => cl,
             q  => s_sw(i)
         );
     end generate sw_ch0;
+
+    div0: c_div
+    generic map (
+        divide => 12_500_000
+    )
+    port map (
+        d => cl,
+        q => cl_ctrl
+    );
+
+    ctrl0: top_ctrl
+    port map (
+        u  => s_key(0),
+        d  => s_key(1),
+        cl => cl_ctrl,
+        q  => mcp_op
+    );
 end architecture rtl;
