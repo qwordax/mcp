@@ -79,6 +79,11 @@ architecture rtl of top is
     signal s_op: std_logic_vector(5 downto 0);
     signal s_rs: std_logic_vector(2 downto 0);
     signal s_rd: std_logic_vector(2 downto 0);
+
+    signal s_d_in:  std_logic_vector(31 downto 0);
+    signal s_d_out: std_logic_vector(31 downto 0);
+
+    signal s_sd_d: std_logic_vector(31 downto 0);
 begin
     key_ch: for i in 0 to 3 generate
         chatter: component c_chatter
@@ -156,9 +161,14 @@ begin
     led(8 downto 6)  <= not s_rs;
     led(11 downto 9) <= not s_rd;
 
+    s_d_out <= "11111111000000001111000011110000";
+    s_d_in  <= "11001100110011001010101001010101";
+
+    s_sd_d <= s_d_out when s_sw(1) = '0' else s_d_in;
+
     sd: component top_sd
     port map (
-        d  => "11110000111100110101010100001111",
+        d  => s_sd_d,
         lh => s_sw(0),
         cl => s_clsd,
         sg => sd_sg,
