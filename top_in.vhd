@@ -8,7 +8,8 @@ port (
     s:  in  std_logic;
     en: in  std_logic;
     q:  out std_logic_vector(31 downto 0);
-    cs: out std_logic_vector(31 downto 0)
+    cs: out std_logic_vector(31 downto 0);
+    lh: out std_logic
 );
 end entity top_in;
 
@@ -85,6 +86,7 @@ begin
     );
 
     cs <= s_dc_q;
+    lh <= s_ctr_q(4);
 
     input: for i in 0 to 31 generate
         s_ff_r(i) <= r and s_dc_q(i);

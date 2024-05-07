@@ -66,7 +66,8 @@ architecture rtl of top is
         s:  in  std_logic;
         en: in  std_logic;
         q:  out std_logic_vector(31 downto 0);
-        cs: out std_logic_vector(31 downto 0)
+        cs: out std_logic_vector(31 downto 0);
+        lh: out std_logic
     );
     end component top_in;
 
@@ -94,11 +95,13 @@ architecture rtl of top is
     signal s_rs_en: std_logic;
     signal s_rd_en: std_logic;
     signal s_in_en: std_logic;
+    signal s_in_lh: std_logic;
 
     signal s_d_in:  std_logic_vector(31 downto 0);
     signal s_d_out: std_logic_vector(31 downto 0);
 
     signal s_sd_d:  std_logic_vector(31 downto 0);
+    signal s_sd_lh: std_logic;
     signal s_sd_cs: std_logic_vector(31 downto 0);
 begin
     key_ch: for i in 0 to 3 generate
@@ -185,7 +188,8 @@ begin
         s  => s_key(3),
         en => s_in_en,
         q  => s_d_in,
-        cs => s_sd_cs
+        cs => s_sd_cs,
+        lh => s_in_lh
     );
 
     led(5 downto 0)  <= not s_op;
@@ -194,13 +198,14 @@ begin
 
     s_d_out <= "11111111000000001111000011110000";
 
-    s_sd_d <= s_d_out when s_sw(1) = '0' else s_d_in;
+    s_sd_d  <= s_d_out when s_sw(1) = '0' else s_d_in;
+    s_sd_lh <= s_in_lh when s_sw(2 downto 1) = "11" else s_sw(0);
 
     sd: component top_sd
     port map (
         d    => s_sd_d,
         d_cs => s_sd_cs,
-        lh   => s_sw(0),
+        lh   => s_sd_lh,
         cl   => s_clsd,
         sg   => sd_sg,
         cs   => sd_cs
