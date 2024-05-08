@@ -71,6 +71,19 @@ architecture rtl of top is
     );
     end component top_in;
 
+    component top_lcd is
+    port (
+        op:     in  std_logic_vector(5 downto 0);
+        rs:     in  std_logic_vector(2 downto 0);
+        rd:     in  std_logic_vector(2 downto 0);
+        cl:     in  std_logic;
+        lcd_rs: out std_logic;
+        lcd_rw: out std_logic;
+        lcd_en: out std_logic;
+        lcd_d:  out std_logic_vector(7 downto 0)
+    );
+    end component top_lcd;
+
     component top_sd is
     port (
         d:    in  std_logic_vector(31 downto 0);
@@ -87,6 +100,7 @@ architecture rtl of top is
 
     signal s_cldiv: std_logic;
     signal s_clsd:  std_logic;
+    signal s_cllcd: std_logic;
 
     signal s_op: std_logic_vector(5 downto 0);
     signal s_rs: std_logic_vector(2 downto 0);
@@ -144,6 +158,15 @@ begin
     port map (
         d => cl,
         q => s_clsd
+    );
+
+    div2: component c_div
+    generic map (
+        divide => 20_000
+    )
+    port map (
+        d => cl,
+        q => s_cllcd
     );
 
     ctrl: component top_ctrl
@@ -209,5 +232,17 @@ begin
         cl   => s_clsd,
         sg   => sd_sg,
         cs   => sd_cs
+    );
+
+    lcd: component top_lcd
+    port map (
+        op     => s_op,
+        rs     => s_rs,
+        rd     => s_rd,
+        cl     => s_cllcd,
+        lcd_rs => lcd_rs,
+        lcd_rw => lcd_rw,
+        lcd_en => lcd_en,
+        lcd_d  => lcd_d
     );
 end architecture rtl;

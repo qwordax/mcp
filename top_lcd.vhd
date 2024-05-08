@@ -1,6 +1,7 @@
 library ieee;
 
 use ieee.std_logic_1164.all;
+use ieee.std_logic_unsigned.all;
 
 entity top_lcd is
 port (
@@ -53,6 +54,18 @@ architecture rtl of top_lcd is
     constant c_x:  std_logic_vector(7 downto 0) := x"58";
     constant c_y:  std_logic_vector(7 downto 0) := x"59";
     constant c_z:  std_logic_vector(7 downto 0) := x"5a";
+
+    type state_type is (
+        set_dlnf,
+        set_cur,
+        set_dcb,
+        set_cgram,
+        wr_cgram,
+        set_ddram,
+        wr_data
+    );
+
+    signal state: state_type := set_dlnf;
 
     type ram is array(0 to 31) of std_logic_vector(7 downto 0);
 
@@ -293,4 +306,46 @@ begin
 
     lcd_rw <= '0';
     lcd_en <= cl;
+
+    process (cl) is
+        variable v_ctr: natural range 0 to 31 := 0;
+    begin
+        if cl'event and cl = '1' then
+            lcd_rs <= '0';
+
+            case state is
+                when set_dlnf =>
+                    lcd_d <= "00000001";
+                    state <= set_cur;
+                when set_cur =>
+                    lcd_d <= "00111000";
+                    state <= set_dcb;
+                when set_dcb =>
+                    lcd_d <= "00001100";
+                    state <= set_cgram;
+                when set_cgram =>
+                    lcd_d <= "00000110";
+                    state <= wr_cgram;
+                when wr_cgram =>
+                    lcd_rs <= '1';
+                    lcd_d  <= s_cgram(v_ctr);
+                    state  <= set_ddram;
+                when set_ddram =>
+                    v_ctr := v_ctr + 1;
+
+                    if v_ctr < 16 then
+                        lcd_d <= "10000000" + v_ctr;
+                    else
+                        lcd_d <= "11000000" + v_ctr - 16;
+                    end if;
+
+                    state <= wr_data;
+                when wr_data =>
+                    lcd_d <= "00000000";
+                    state <= set_cur;
+                when others =>
+                    null;
+            end case;
+        end if;
+    end process;
 end architecture rtl;
