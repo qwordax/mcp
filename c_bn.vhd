@@ -2,33 +2,33 @@ library ieee;
 
 use ieee.std_logic_1164.all;
 
-entity c_chatter is
+entity c_bn is
 generic (
-    width: natural
+    g_width: natural
 );
 port (
-    d:  in  std_logic;
-    cl: in  std_logic;
-    q:  out std_logic
+    p_d:  in  std_logic;
+    p_cl: in  std_logic;
+    p_q:  out std_logic
 );
-end entity c_chatter;
+end entity c_bn;
 
-architecture rtl of c_chatter is
+architecture rtl of c_bn is
 begin
-    process (d, cl) is
+    process (p_d, p_cl) is
         variable v_tmp: natural range 0 to 2 ** width - 1;
     begin
-        if cl'event and cl = '1' then
-            if d = '0' and v_tmp > v_tmp'low then
+        if p_cl'event and p_cl = '1' then
+            if p_d = '0' and v_tmp > v_tmp'low then
                 v_tmp := v_tmp - 1;
             elsif d = '1' and v_tmp < v_tmp'high then
                 v_tmp := v_tmp + 1;
             end if;
 
             if v_tmp = v_tmp'low then
-                q <= '0';
+                p_q <= '0';
             elsif v_tmp = v_tmp'high then
-                q <= '1';
+                p_q <= '1';
             end if;
         end if;
     end process;
