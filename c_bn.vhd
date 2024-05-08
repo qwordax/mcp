@@ -16,12 +16,12 @@ end entity c_bn;
 architecture rtl of c_bn is
 begin
     process (p_d, p_cl) is
-        variable v_tmp: natural range 0 to 2 ** width - 1;
+        variable v_tmp: natural range 0 to 2 ** g_width - 1;
     begin
         if p_cl'event and p_cl = '1' then
             if p_d = '0' and v_tmp > v_tmp'low then
                 v_tmp := v_tmp - 1;
-            elsif d = '1' and v_tmp < v_tmp'high then
+            elsif p_d = '1' and v_tmp < v_tmp'high then
                 v_tmp := v_tmp + 1;
             end if;
 

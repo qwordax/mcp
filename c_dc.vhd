@@ -5,23 +5,23 @@ use ieee.std_logic_1164.all;
 
 entity c_dc is
 generic (
-    width: natural
+    g_width: natural
 );
 port (
-    d:  in  std_logic_vector(width - 1 downto 0);
-    en: in  std_logic;
-    q:  out std_logic_vector(2 ** width - 1 downto 0)
+    p_d:  in  std_logic_vector(g_width - 1 downto 0);
+    p_en: in  std_logic;
+    p_q:  out std_logic_vector(2 ** g_width - 1 downto 0)
 );
 end entity c_dc;
 
 architecture rtl of c_dc is
 begin
-    process (d, en) is
+    process (p_d, p_en) is
     begin
-        q <= (others => '0');
+        p_q <= (others => '0');
 
-        if en = '1' then
-            q(to_integer(unsigned(d))) <= '1';
+        if p_en = '1' then
+            p_q(to_integer(unsigned(p_d))) <= '1';
         end if;
     end process;
 end architecture rtl;
