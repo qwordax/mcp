@@ -8,6 +8,7 @@ port (
     op:     in  std_logic_vector(5 downto 0);
     rs:     in  std_logic_vector(2 downto 0);
     rd:     in  std_logic_vector(2 downto 0);
+    mode:   in  std_logic_vector(1 downto 0);
     cl:     in  std_logic;
     lcd_rs: out std_logic;
     lcd_rw: out std_logic;
@@ -73,7 +74,7 @@ architecture rtl of top_lcd is
         c_sp, c_sp, c_sp, c_sp, c_sp, c_sp, c_sp, c_sp, -- 1
         c_sp, c_sp, c_sp, c_sp, c_sp, c_r,  c_s,  c_sp,
         c_sp, c_sp, c_sp, c_sp, c_sp, c_sp, c_sp, c_sp, -- 2
-        c_sp, c_sp, c_sp, c_sp, c_sp, c_r,  c_d,  c_sp
+        c_sp, c_sp, c_sp, c_sp, c_sp, c_r,  c_s,  c_sp
     );
 begin
     process (op) is
@@ -301,6 +302,34 @@ begin
             when "110"  => s_cgram(31) <= c_6;
             when "111"  => s_cgram(31) <= c_7;
             when others => null;
+        end case;
+    end process;
+
+    process (mode) is
+    begin
+        case mode is
+            when "00" =>
+                s_cgram(16) <= c_r;
+                s_cgram(17) <= c_o;
+                s_cgram(18) <= c_u;
+                s_cgram(19) <= c_t;
+            when "01" =>
+                s_cgram(16) <= c_r;
+                s_cgram(17) <= c_i;
+                s_cgram(18) <= c_n;
+                s_cgram(19) <= c_sp;
+            when "10" =>
+                s_cgram(16) <= c_r;
+                s_cgram(17) <= c_o;
+                s_cgram(18) <= c_u;
+                s_cgram(19) <= c_t;
+            when "11" =>
+                s_cgram(16) <= c_w;
+                s_cgram(17) <= c_i;
+                s_cgram(18) <= c_n;
+                s_cgram(19) <= c_sp;
+            when others =>
+                null;
         end case;
     end process;
 

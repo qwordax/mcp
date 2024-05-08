@@ -76,6 +76,7 @@ architecture rtl of top is
         op:     in  std_logic_vector(5 downto 0);
         rs:     in  std_logic_vector(2 downto 0);
         rd:     in  std_logic_vector(2 downto 0);
+        mode:   in  std_logic_vector(1 downto 0);
         cl:     in  std_logic;
         lcd_rs: out std_logic;
         lcd_rw: out std_logic;
@@ -117,6 +118,8 @@ architecture rtl of top is
     signal s_sd_d:  std_logic_vector(31 downto 0);
     signal s_sd_lh: std_logic;
     signal s_sd_cs: std_logic_vector(31 downto 0);
+
+    signal s_lcd_mode: std_logic_vector(1 downto 0);
 begin
     key_ch: for i in 0 to 3 generate
         chatter: component c_chatter
@@ -144,7 +147,7 @@ begin
 
     div0: component c_div
     generic map (
-        divide => 12_500_000
+        divide => 25_000_000
     )
     port map (
         d => cl,
@@ -153,7 +156,7 @@ begin
 
     div1: component c_div
     generic map (
-        divide => 10_000
+        divide => 20_000
     )
     port map (
         d => cl,
@@ -234,11 +237,14 @@ begin
         cs   => sd_cs
     );
 
+    s_lcd_mode <= s_sw(2 downto 1);
+
     lcd: component top_lcd
     port map (
         op     => s_op,
         rs     => s_rs,
         rd     => s_rd,
+        mode   => s_lcd_mode,
         cl     => s_cllcd,
         lcd_rs => lcd_rs,
         lcd_rw => lcd_rw,
