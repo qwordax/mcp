@@ -94,34 +94,14 @@ begin
         p_q    => s_bus_data
     );
 
-    l_mcp_data: entity work.e_mcp_data
+    l_mcp_drg: entity work.e_mcp_drg
     port map (
         p_rs   => s_rs,
         p_rd   => s_rd,
-        p_d    => s_bus_data,
         p_ctrl => s_bus_ctrl,
-        p_q    => s_q,
+        p_d    => s_bus_data,
         p_op0  => s_op0,
         p_op1  => s_op1
-    );
-
-    l_tri_data: entity work.c_tri
-    generic map (
-        g_width => 32
-    )
-    port map (
-        p_d  => s_q,
-        p_en => s_tri_data_en,
-        p_q  => s_bus_data
-    );
-
-    l_tri_data_en: entity work.c_tff
-    port map (
-        p_r  => '0',
-        p_s  => '0',
-        p_cl => s_bus_ctrl(1),
-        p_en => '1',
-        p_q  => s_tri_data_en
     );
 
     l_mcp_out: entity work.e_mcp_out
