@@ -34,7 +34,7 @@ architecture rtl of e_mcp is
     signal s_bus_data: std_logic_vector(31 downto 0);
     signal s_bus_ctrl: std_logic_vector(9 downto 0);
 begin
-    l_op: entity work.c_rg
+    l_mcp_op: entity work.c_rg
     generic map (
         g_width => 6
     )
@@ -47,7 +47,7 @@ begin
         p_q  => s_op
     );
 
-    l_rs: entity work.c_rg
+    l_mcp_rs: entity work.c_rg
     generic map (
         g_width => 3
     )
@@ -60,7 +60,7 @@ begin
         p_q  => s_rs
     );
 
-    l_rd: entity work.c_rg
+    l_mcp_rd: entity work.c_rg
     generic map (
         g_width => 3
     )
@@ -73,6 +73,12 @@ begin
         p_q  => s_rd
     );
 
+    l_mcp_dc: entity work.e_mcp_dc
+    port map (
+        p_op  => s_op,
+        p_cmd => s_cmd
+    );
+
     l_mcp_in: entity work.e_mcp_in
     port map (
         p_d    => p_d,
@@ -81,35 +87,11 @@ begin
         p_q    => s_bus_data
     );
 
-    l_mcp_dc: entity work.e_mcp_dc
-    port map (
-        p_op  => s_op,
-        p_cmd => s_cmd
-    );
-
     l_mcp_const: entity work.e_mcp_const
     port map (
-        p_cmd => s_cmd(28 downto 25) & s_cmd(17 downto 16),
-        p_q   => s_const
-    );
-
-    l_tri_const: entity work.c_tri
-    generic map (
-        g_width => 32
-    )
-    port map (
-        p_d  => s_const,
-        p_en => s_tri_const_en,
-        p_q  => s_bus_data
-    );
-
-    l_tri_const_en: entity work.c_tff
-    port map (
-        p_r  => '0',
-        p_s  => '0',
-        p_cl => s_bus_ctrl(3),
-        p_en => '1',
-        p_q  => s_tri_const_en
+        p_cmd  => s_cmd(28 downto 25) & s_cmd(17 downto 16),
+        p_ctrl => s_bus_ctrl,
+        p_q    => s_bus_data
     );
 
     l_mcp_data: entity work.e_mcp_data
