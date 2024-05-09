@@ -4,7 +4,7 @@ use ieee.std_logic_1164.all;
 
 entity e_mcp_const is
 port (
-    p_cmd:  in  std_logic_vector(5 downto 0);
+    p_cmd:  in  std_logic_vector(37 downto 0);
     p_ctrl: in  std_logic_vector(9 downto 0);
     p_q:    out std_logic_vector(31 downto 0)
 );
@@ -16,15 +16,21 @@ architecture rtl of e_mcp_const is
 begin
     process (p_cmd) is
     begin
-        case p_cmd is
-            when "000001" => s_q <= "00000000000000000000000000000000";
-            when "000010" => s_q <= "00000000000000000000000000000001";
-            when "000100" => s_q <= "00000000000000000000000000000000";
-            when "001000" => s_q <= "00111111100000000000000000000000";
-            when "010000" => s_q <= "01000000010010010000111111011011";
-            when "100000" => s_q <= "01000000001011011111100001010100";
-            when others   => s_q <= "00000000000000000000000000000000";
-        end case;
+        s_q <= "00000000000000000000000000000000";
+
+        if p_cmd(16) = '1' then
+            s_q <= "00000000000000000000000000000000";
+        elsif p_cmd(17) = '1' then
+            s_q <= "00000000000000000000000000000001";
+        elsif p_cmd(25) = '1' then
+            s_q <= "00000000000000000000000000000000";
+        elsif p_cmd(26) = '1' then
+            s_q <= "00111111100000000000000000000000";
+        elsif p_cmd(27) = '1' then
+            s_q <= "01000000010010010000111111011011";
+        elsif p_cmd(28) = '1' then
+            s_q <= "01000000001011011111100001010100";
+        end if;
     end process;
 
     l_en: entity work.c_tff
