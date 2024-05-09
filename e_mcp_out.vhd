@@ -12,7 +12,7 @@ end entity e_mcp_out;
 
 architecture rtl of e_mcp_out is
 begin
-    l_rg: entity work.c_rg
+    l_out: entity work.c_rg
     generic map (
         g_width => 32
     )
