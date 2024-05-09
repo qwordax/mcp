@@ -10,8 +10,8 @@ port (
     p_r:  in  std_logic;
     p_s:  in  std_logic;
     p_d:  in  std_logic;
-    p_en: in  std_logic;
     p_cl: in  std_logic;
+    p_en: in  std_logic;
     p_q:  out std_logic_vector(g_width - 1 downto 0)
 );
 end entity c_srg;
