@@ -21,9 +21,11 @@ architecture rtl of e_mcp is
     signal s_rd: std_logic_vector(2 downto 0);
     signal s_d:  std_logic_vector(31 downto 0);
 
-    signal s_cmd: std_logic_vector(37 downto 0);
+    signal s_cmd:   std_logic_vector(37 downto 0);
+    signal s_const: std_logic_vector(31 downto 0);
 
-    signal s_tri_in_en: std_logic;
+    signal s_tri_in_en:    std_logic;
+    signal s_tri_const_en: std_logic;
 
     signal s_bus_data: std_logic_vector(31 downto 0);
     signal s_bus_ctrl: std_logic_vector(9 downto 0);
@@ -116,5 +118,30 @@ begin
     port map (
         p_op  => s_op,
         p_cmd => s_cmd
+    );
+
+    l_mcp_const: entity work.e_mcp_const
+    port map (
+        p_cmd => s_cmd(28 downto 25) & s_cmd(17 downto 16),
+        p_q   => s_const
+    );
+
+    l_tri_const: entity work.c_tri
+    generic map (
+        g_width => 32
+    )
+    port map (
+        p_d  => s_const,
+        p_en => s_tri_const_en,
+        p_q  => s_bus_data
+    );
+
+    l_tri_const_en: entity work.c_tff
+    port map (
+        p_r  => '0',
+        p_s  => '0',
+        p_cl => s_bus_ctrl(3),
+        p_en => '1',
+        p_q  => s_tri_const_en
     );
 end architecture rtl;
