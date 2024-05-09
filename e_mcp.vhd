@@ -105,19 +105,6 @@ begin
         p_q  => s_tri_in_en
     );
 
-    l_rg_out: entity work.c_rg
-    generic map (
-        g_width => 32
-    )
-    port map (
-        p_r  => '0',
-        p_s  => '0',
-        p_d  => s_bus_data,
-        p_cl => s_bus_ctrl(7),
-        p_en => '1',
-        p_q  => p_q
-    );
-
     l_mcp_dc: entity work.e_mcp_dc
     port map (
         p_op  => s_op,
@@ -177,5 +164,12 @@ begin
         p_cl => s_bus_ctrl(1),
         p_en => '1',
         p_q  => s_tri_data_en
+    );
+
+    l_mcp_out: entity work.e_mcp_out
+    port map (
+        p_d    => s_bus_data,
+        p_ctrl => s_bus_ctrl,
+        p_q    => p_q
     );
 end architecture rtl;
