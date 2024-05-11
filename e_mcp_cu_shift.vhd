@@ -24,25 +24,6 @@ begin
         variable v_rol: std_logic_vector(31 downto 0);
         variable v_ror: std_logic_vector(31 downto 0);
     begin
---        for i in 0 to  loop
---            v_sll := v_sll(30 downto 0) & '0';
---            v_srl := '0' & v_srl(31 downto 1);
---            v_sra := v_sra(31) & v_sra(31 downto 1);
---            v_rol := v_rol(30 downto 0) & v_rol(31);
---            v_ror := v_ror(0) & v_ror(31 downto 1);
---        end loop;
---        v_sll :=  & ;
---        v_srl :=  & ;
---
---        if v_sra(31) = '1' then
---            v_sra := v_srl(31 downto to_integer(unsigned(p_a(4 downto 0))));
---        else
---            v_sra := v_srl;
---        end if;
---
---        v_rol := v_rol(31 - to_integer(unsigned(p_a(4 downto 0))) downto 0) & v_rol(31 downto 31 - to_integer(unsigned(p_a(4 downto 0))) + 1);
---        v_ror := v_ror(to_integer(unsigned(p_a(4 downto 0))) - 1 downto 0) & v_ror(31 downto to_integer(unsigned(p_a(4 downto 0))));
-
         v_sll(31 downto v_tmp) := p_op0(31 - v_tmp downto 0);
         v_sll(v_tmp - 1 downto 0) := (others => '0');
 
