@@ -19,8 +19,16 @@ architecture rtl of e_mcp_cu is
 begin
     l_logic: entity work.e_mcp_cu_logic
     port map (
-        p_a   => p_op0,
-        p_b   => p_op1,
+        p_op0 => p_op0,
+        p_op1 => p_op1,
+        p_cmd => p_cmd,
+        p_q   => open
+    );
+
+    l_shift: entity work.e_mcp_cu_shift
+    port map (
+        p_op0 => p_op0,
+        p_op1 => p_op1,
         p_cmd => p_cmd,
         p_q   => open
     );
