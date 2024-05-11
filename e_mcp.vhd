@@ -85,9 +85,9 @@ begin
 
     l_mcp_cu: entity work.e_mcp_cu
     port map (
-        p_cmd  => s_cmd,
         p_op0  => s_op0,
         p_op1  => s_op1,
+        p_cmd  => s_cmd,
         p_ctrl => s_bus_ctrl,
         p_q    => s_bus_d,
         p_f    => s_f

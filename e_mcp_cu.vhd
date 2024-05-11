@@ -4,9 +4,9 @@ use ieee.std_logic_1164.all;
 
 entity e_mcp_cu is
 port (
-    p_cmd:  in  std_logic_vector(37 downto 0);
     p_op0:  in  std_logic_vector(31 downto 0);
     p_op1:  in  std_logic_vector(31 downto 0);
+    p_cmd:  in  std_logic_vector(37 downto 0);
     p_ctrl: in  std_logic_vector(9 downto 0);
     p_q:    out std_logic_vector(31 downto 0);
     p_f:    out std_logic_vector(8 downto 0)
@@ -17,6 +17,14 @@ architecture rtl of e_mcp_cu is
     signal s_d:  std_logic_vector(31 downto 0);
     signal s_en: std_logic;
 begin
+    l_logic: entity work.e_mcp_cu_logic
+    port map (
+        p_a   => p_op0,
+        p_b   => p_op1,
+        p_cmd => p_cmd,
+        p_q   => open
+    );
+
     l_en: entity work.c_tff
     port map (
         p_r  => '0',
