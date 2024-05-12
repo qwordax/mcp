@@ -49,6 +49,14 @@ begin
         p_q    => open
     );
 
+    l_idiv: entity work.e_mcp_cu_idiv
+    port map (
+        p_op0  => p_op0,
+        p_op1  => p_op1,
+        p_ctrl => p_ctrl,
+        p_q    => open
+    );
+
     l_en: entity work.c_tff
     port map (
         p_r  => '0',
