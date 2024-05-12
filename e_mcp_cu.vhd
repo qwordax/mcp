@@ -33,7 +33,7 @@ begin
         p_q   => open
     );
 
-    l_sm: entity work.e_mcp_cu_sm
+    l_iadd: entity work.e_mcp_cu_iadd
     port map (
         p_op0 => p_op0,
         p_op1 => p_op1,

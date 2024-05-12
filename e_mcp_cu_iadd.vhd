@@ -2,16 +2,16 @@ library ieee;
 
 use ieee.std_logic_1164.all;
 
-entity e_mcp_cu_sm is
+entity e_mcp_cu_iadd is
 port (
     p_op0: in  std_logic_vector(31 downto 0);
     p_op1: in  std_logic_vector(31 downto 0);
     p_cmd: in  std_logic_vector(37 downto 0);
     p_q:   out std_logic_vector(31 downto 0)
 );
-end entity e_mcp_cu_sm;
+end entity e_mcp_cu_iadd;
 
-architecture rtl of e_mcp_cu_sm is
+architecture rtl of e_mcp_cu_iadd is
     signal s_ci: std_logic;
 
     signal s_a: std_logic_vector(31 downto 0);
