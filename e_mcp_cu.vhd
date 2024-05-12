@@ -9,7 +9,7 @@ port (
     p_cmd:  in  std_logic_vector(37 downto 0);
     p_ctrl: in  std_logic_vector(10 downto 0);
     p_q:    out std_logic_vector(31 downto 0);
-    p_f:    out std_logic_vector(8 downto 0)
+    p_f:    out std_logic_vector(7 downto 0)
 );
 end entity e_mcp_cu;
 
@@ -69,6 +69,13 @@ begin
         p_op  => p_op0,
         p_cmd => p_cmd,
         p_q   => open
+    );
+
+    l_icomp: entity work.e_mcp_cu_icomp
+    port map (
+        p_op0 => p_op0,
+        p_op1 => p_op1,
+        p_f   => open
     );
 
     l_en: entity work.c_tff
