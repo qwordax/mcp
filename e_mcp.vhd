@@ -28,7 +28,7 @@ architecture rtl of e_mcp is
     signal s_op1: std_logic_vector(31 downto 0);
 
     signal s_bus_d:    std_logic_vector(31 downto 0);
-    signal s_bus_ctrl: std_logic_vector(9 downto 0);
+    signal s_bus_ctrl: std_logic_vector(10 downto 0);
 begin
     l_mcp_op: entity work.c_rg
     generic map (

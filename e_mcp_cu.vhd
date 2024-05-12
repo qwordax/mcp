@@ -7,7 +7,7 @@ port (
     p_op0:  in  std_logic_vector(31 downto 0);
     p_op1:  in  std_logic_vector(31 downto 0);
     p_cmd:  in  std_logic_vector(37 downto 0);
-    p_ctrl: in  std_logic_vector(9 downto 0);
+    p_ctrl: in  std_logic_vector(10 downto 0);
     p_q:    out std_logic_vector(31 downto 0);
     p_f:    out std_logic_vector(8 downto 0)
 );
@@ -39,6 +39,14 @@ begin
         p_op1 => p_op1,
         p_cmd => p_cmd,
         p_q   => open
+    );
+
+    l_imul: entity work.e_mcp_cu_imul
+    port map (
+        p_op0  => p_op0,
+        p_op1  => p_op1,
+        p_ctrl => p_ctrl,
+        p_q    => open
     );
 
     l_en: entity work.c_tff

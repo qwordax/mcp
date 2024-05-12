@@ -6,7 +6,7 @@ entity e_mcp_in is
 port (
     p_d:    in  std_logic_vector(31 downto 0);
     p_st:   in  std_logic;
-    p_ctrl: in  std_logic_vector(9 downto 0);
+    p_ctrl: in  std_logic_vector(10 downto 0);
     p_q:    out std_logic_vector(31 downto 0)
 );
 end entity e_mcp_in;

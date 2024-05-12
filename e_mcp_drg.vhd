@@ -7,7 +7,7 @@ entity e_mcp_drg is
 port (
     p_rs:   in    std_logic_vector(2 downto 0);
     p_rd:   in    std_logic_vector(2 downto 0);
-    p_ctrl: in    std_logic_vector(9 downto 0);
+    p_ctrl: in    std_logic_vector(10 downto 0);
     p_d:    inout std_logic_vector(31 downto 0);
     p_op0:  out   std_logic_vector(31 downto 0);
     p_op1:  out   std_logic_vector(31 downto 0)
