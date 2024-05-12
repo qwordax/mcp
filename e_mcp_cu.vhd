@@ -64,6 +64,13 @@ begin
         p_q   => open
     );
 
+    l_chs: entity work.e_mcp_cu_chs
+    port map (
+        p_op  => p_op0,
+        p_cmd => p_cmd,
+        p_q   => open
+    );
+
     l_en: entity work.c_tff
     port map (
         p_r  => '0',
