@@ -27,7 +27,9 @@ begin
         p_a  => s_op,
         p_b  => (others => '0'),
         p_s  => s_sm,
-        p_co => open
+        p_co => open,
+        p_o  => open,
+        p_u  => open
     );
 
     process (p_cmd) is

@@ -31,6 +31,8 @@ begin
         p_a  => s_a,
         p_b  => s_b,
         p_s  => p_q,
-        p_co => open
+        p_co => open,
+        p_o  => open,
+        p_u  => open
     );
 end architecture rtl;

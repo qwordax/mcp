@@ -19,7 +19,6 @@ architecture rtl of e_mcp_cu_idiv is
     signal s_ci: std_logic;
     signal s_b:  std_logic_vector(31 downto 0);
     signal s_sm: std_logic_vector(31 downto 0);
-    signal s_co: std_logic;
 
     signal s_crci: std_logic;
     signal s_crsm: std_logic_vector(31 downto 0);
@@ -59,7 +58,9 @@ begin
         p_a  => s_rem,
         p_b  => s_b,
         p_s  => s_sm,
-        p_co => s_co
+        p_co => open,
+        p_o  => open,
+        p_u  => open
     );
 
     l_rem: entity work.c_srg
