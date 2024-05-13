@@ -30,7 +30,7 @@ begin
         p_ci => s_ci,
         p_a  => s_a,
         p_b  => s_b,
-        p_s  => p_q,
+        p_q  => p_q,
         p_co => open,
         p_o  => open,
         p_u  => open

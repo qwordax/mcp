@@ -29,9 +29,9 @@ begin
             v_tmp := p_pd;
         elsif p_cl'event and p_cl = '1' and p_en = '1' then
             if p_lr = '0' then
-                v_tmp := v_tmp(g_width - 2 downto 0) & p_sd;
-            elsif p_lr = '1' then
                 v_tmp := p_sd & v_tmp(g_width - 1 downto 1);
+            elsif p_lr = '1' then
+                v_tmp := v_tmp(g_width - 2 downto 0) & p_sd;
             end if;
         end if;
 

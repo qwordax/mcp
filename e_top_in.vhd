@@ -14,6 +14,7 @@ port (
 end entity e_top_in;
 
 architecture rtl of e_top_in is
+    signal s_ctr_r:  std_logic;
     signal s_ctr_cl: std_logic;
     signal s_ctr_q:  std_logic_vector(4 downto 0);
 
@@ -22,6 +23,8 @@ architecture rtl of e_top_in is
     signal s_r: std_logic_vector(31 downto 0);
     signal s_s: std_logic_vector(31 downto 0);
 begin
+    s_ctr_r <= not p_en;
+
     s_ctr_cl <= p_r nor p_s;
 
     l_ctr: entity work.c_ctr
@@ -29,7 +32,7 @@ begin
         g_width => 5
     )
     port map (
-        p_r  => not p_en,
+        p_r  => s_ctr_r,
         p_cl => s_ctr_cl,
         p_en => p_en,
         p_q  => s_ctr_q

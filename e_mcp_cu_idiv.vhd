@@ -57,7 +57,7 @@ begin
         p_ci => s_ci,
         p_a  => s_rem,
         p_b  => s_b,
-        p_s  => s_sm,
+        p_q  => s_sm,
         p_co => open,
         p_o  => open,
         p_u  => open
@@ -102,7 +102,7 @@ begin
         p_ci => s_crci,
         p_a  => s_op1,
         p_b  => (others => '0'),
-        p_s  => s_crsm,
+        p_q  => s_crsm,
         p_co => open
     );
 

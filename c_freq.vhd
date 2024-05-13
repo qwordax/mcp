@@ -13,13 +13,15 @@ port (
 end entity c_freq;
 
 architecture rtl of c_freq is
+    subtype tmp_type is natural range 0 to g_divide - 1;
+
     signal s_q: std_logic := '0';
 begin
     process (p_d) is
-        variable v_tmp: natural range 0 to g_divide - 1;
+        variable v_tmp: tmp_type;
     begin
         if p_d'event and p_d = '1' then
-            if v_tmp = v_tmp'high then
+            if v_tmp = tmp_type'high then
                 s_q <= not s_q; v_tmp := 0;
             else
                 v_tmp := v_tmp + 1;

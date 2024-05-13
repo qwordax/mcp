@@ -10,7 +10,7 @@ port (
     p_ci: in  std_logic;
     p_a:  in  std_logic_vector(g_width - 1 downto 0);
     p_b:  in  std_logic_vector(g_width - 1 downto 0);
-    p_s:  out std_logic_vector(g_width - 1 downto 0);
+    p_q:  out std_logic_vector(g_width - 1 downto 0);
     p_co: out std_logic;
     p_o:  out std_logic;
     p_u:  out std_logic
@@ -23,7 +23,7 @@ architecture rtl of c_sm is
 
     signal s_a: std_logic_vector(g_width downto 0);
     signal s_b: std_logic_vector(g_width downto 0);
-    signal s_s: std_logic_vector(g_width downto 0);
+    signal s_q: std_logic_vector(g_width downto 0);
 begin
     s_a <= p_a(g_width - 1) & p_a;
     s_b <= p_b(g_width - 1) & p_b;
@@ -42,13 +42,13 @@ begin
             p_ci => s_ci(i),
             p_a  => s_a(i),
             p_b  => s_b(i),
-            p_s  => s_s(i),
+            p_q  => s_q(i),
             p_co => s_co(i)
         );
     end generate l_sm;
 
-    p_s <= s_s(g_width - 1 downto 0);
+    p_q <= s_q(g_width - 1 downto 0);
 
-    p_o <= '1' when s_s(g_width downto g_width - 1) = "01" else '0';
-    p_u <= '1' when s_s(g_width downto g_width - 1) = "10" else '0';
+    p_o <= '1' when s_q(g_width downto g_width - 1) = "01" else '0';
+    p_u <= '1' when s_q(g_width downto g_width - 1) = "10" else '0';
 end architecture rtl;

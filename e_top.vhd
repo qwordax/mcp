@@ -18,6 +18,9 @@ port (
 end entity e_top;
 
 architecture rtl of e_top is
+    signal s_p_k:  std_logic_vector(3 downto 0);
+    signal s_p_sw: std_logic_vector(3 downto 0);
+
     signal s_k:  std_logic_vector(3 downto 0);
     signal s_sw: std_logic_vector(3 downto 0);
 
@@ -43,13 +46,16 @@ architecture rtl of e_top is
     signal s_sd_ml: std_logic;
     signal s_sd_cs: std_logic_vector(31 downto 0);
 begin
+    s_p_k  <= not p_k;
+    s_p_sw <= not p_sw;
+
     l_k: for i in 0 to 3 generate
         l_bn: entity work.c_bn
         generic map (
             g_width => 20
         )
         port map (
-            p_d  => not p_k(i),
+            p_d  => s_p_k(i),
             p_cl => p_cl,
             p_q  => s_k(i)
         );
@@ -61,7 +67,7 @@ begin
             g_width => 4
         )
         port map (
-            p_d  => not p_sw(i),
+            p_d  => s_p_sw(i),
             p_cl => p_cl,
             p_q  => s_sw(i)
         );

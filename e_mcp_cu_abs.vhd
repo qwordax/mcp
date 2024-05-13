@@ -26,7 +26,7 @@ begin
         p_ci => s_ci,
         p_a  => s_op,
         p_b  => (others => '0'),
-        p_s  => s_sm,
+        p_q  => s_sm,
         p_co => open,
         p_o  => open,
         p_u  => open
