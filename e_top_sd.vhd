@@ -42,7 +42,7 @@ begin
         p_q  => s_cs
     );
 
-    l_div: entity work.c_div
+    l_div: entity work.c_freq
     generic map (
         g_divide => 1_000
     )

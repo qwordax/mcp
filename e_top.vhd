@@ -67,7 +67,7 @@ begin
         );
     end generate l_sw;
 
-    l_div_ctrl: entity work.c_div
+    l_div_ctrl: entity work.c_freq
     generic map (
         g_divide => 25_000_000
     )
@@ -126,7 +126,7 @@ begin
         p_ml => s_in_ml
     );
 
-    l_div_lcd: entity work.c_div
+    l_div_lcd: entity work.c_freq
     generic map (
         g_divide => 20_000
     )

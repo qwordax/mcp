@@ -2,7 +2,7 @@ library ieee;
 
 use ieee.std_logic_1164.all;
 
-entity c_div is
+entity c_freq is
 generic (
     g_divide: natural
 );
@@ -10,9 +10,9 @@ port (
     p_d: in  std_logic;
     p_q: out std_logic
 );
-end entity c_div;
+end entity c_freq;
 
-architecture rtl of c_div is
+architecture rtl of c_freq is
     signal s_q: std_logic := '0';
 begin
     process (p_d) is
