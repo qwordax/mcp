@@ -146,20 +146,13 @@ begin
     s_q <= s_p & s_b;
 
     process (s_q) is
-        variable v_or:  std_logic := '0';
-        variable v_and: std_logic := '1';
     begin
-        for i in 2 * g_width - 2 downto g_width - 1 loop
-            v_or  := v_or  or s_q(i);
-            v_and := v_and and s_q(i);
-        end loop;
-
         if s_q(2 * g_width - 1) = '0' then
-            p_o <= s_q(2 * g_width - 1) xor v_or;
+            p_o <= s_q(2 * g_width - 1) xor s_q(g_width - 1);
             p_u <= '0';
         else
             p_o <= '0';
-            p_u <= s_q(2 * g_width - 1) xor v_and;
+            p_u <= s_q(2 * g_width - 1) xor s_q(g_width - 1);
         end if;
     end process;
 
