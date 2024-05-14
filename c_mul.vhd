@@ -25,6 +25,9 @@ architecture rtl of c_mul is
     signal s_p: std_logic_vector(g_width - 1 downto 0);
     signal s_q: std_logic_vector(2 * g_width - 1 downto 0);
 
+    signal s_b_cl: std_logic;
+    signal s_p_cl: std_logic;
+
     signal s_sm_ci: std_logic;
     signal s_sm_a:  std_logic_vector(g_width - 1 downto 0);
     signal s_sm_b:  std_logic_vector(g_width - 1 downto 0);
@@ -33,7 +36,7 @@ architecture rtl of c_mul is
 
     signal s_ff: std_logic;
 
-    signal s_sd: std_logic;
+    signal s_di: std_logic;
 begin
     l_a: entity work.c_rg
     generic map (
@@ -48,20 +51,25 @@ begin
         p_q  => s_a
     );
 
+    s_b_cl <= p_st or p_cl(1);
+
     l_b: entity work.c_srg
     generic map (
         g_width => g_width
     )
     port map (
         p_r  => '0',
-        p_s  => p_st,
-        p_pd => p_b,
-        p_sd => s_p(0),
+        p_s  => '0',
+        p_di => s_p(0),
+        p_d  => p_b,
+        p_ps => p_st,
         p_lr => '0',
-        p_cl => p_cl(1),
+        p_cl => s_b_cl,
         p_en => '1',
         p_q  => s_b
     );
+
+    s_p_cl <= p_cl(0) or p_cl(1);
 
     l_p: entity work.c_srg
     generic map (
@@ -69,11 +77,12 @@ begin
     )
     port map (
         p_r  => p_st,
-        p_s  => p_cl(0),
-        p_pd => s_sm_q,
-        p_sd => s_sd,
+        p_s  => '0',
+        p_di => s_di,
+        p_d  => s_sm_q,
+        p_ps => p_cl(0),
         p_lr => '0',
-        p_cl => p_cl(1),
+        p_cl => s_p_cl,
         p_en => '1',
         p_q  => s_p
     );
@@ -98,9 +107,9 @@ begin
         end if;
 
         if v_ctr = ctr_type'high then
-            s_sd <= s_p(g_width - 1);
+            s_di <= s_p(g_width - 1);
         else
-            s_sd <= s_ff or s_p(g_width - 1);
+            s_di <= s_ff or s_p(g_width - 1);
         end if;
     end process;
 
