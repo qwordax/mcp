@@ -20,7 +20,7 @@ begin
         p_r  => '0',
         p_s  => '0',
         p_d  => p_d,
-        p_cl => p_ctrl(7),
+        p_cl => p_ctrl(6), -- WOUT
         p_en => '1',
         p_q  => p_q
     );
