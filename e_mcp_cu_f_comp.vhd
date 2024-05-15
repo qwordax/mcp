@@ -6,8 +6,8 @@ entity e_mcp_cu_f_comp is
 port (
     p_opd:  in  std_logic_vector(31 downto 0);
     p_ops:  in  std_logic_vector(31 downto 0);
+    p_cmd:  in  std_logic_vector(36 downto 0);
     p_ctrl: in  std_logic_vector(10 downto 0);
-    p_en:   in  std_logic;
     p_fl:   out std_logic_vector(7 downto 5)
 );
 end entity e_mcp_cu_f_comp;
@@ -40,7 +40,7 @@ begin
         p_s  => '0',
         p_d  => p_opd,
         p_cl => p_ctrl(8), -- CU0
-        p_en => p_en,
+        p_en => p_cmd(36), -- FCMP
         p_q  => s_opd
     );
 
@@ -53,15 +53,15 @@ begin
         p_s  => '0',
         p_d  => p_ops,
         p_cl => p_ctrl(8), -- CU0
-        p_en => p_en,
+        p_en => p_cmd(36), -- FCMP
         p_q  => s_ops
     );
 
-    s_s_l <= s_opd(31) and not s_ops(31) and p_en;
-    s_s_e <= s_opd(31) xnor s_ops(31) and p_en;
-    s_s_g <= not s_opd(31) and s_ops(31) and p_en;
+    s_s_l <= s_opd(31) and not s_ops(31) and p_cmd(36);
+    s_s_e <= s_opd(31) xnor s_ops(31) and p_cmd(36);
+    s_s_g <= not s_opd(31) and s_ops(31) and p_cmd(36);
 
-    s_e_en <= p_en and s_s_e;
+    s_e_en <= s_s_e and p_cmd(36);
 
     l_e: entity work.c_comp
     generic map (
@@ -76,7 +76,7 @@ begin
         p_g  => s_e_g
     );
 
-    s_m_en <= p_en and s_e_e;
+    s_m_en <= s_e_e and p_cmd(36);
 
     l_m: entity work.c_comp
     generic map (

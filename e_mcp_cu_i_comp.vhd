@@ -6,8 +6,8 @@ entity e_mcp_cu_i_comp is
 port (
     p_opd:  in  std_logic_vector(31 downto 0);
     p_ops:  in  std_logic_vector(31 downto 0);
+    p_cmd:  in  std_logic_vector(36 downto 0);
     p_ctrl: in  std_logic_vector(10 downto 0);
-    p_en:   in  std_logic;
     p_fl:   out std_logic_vector(7 downto 5)
 );
 end entity e_mcp_cu_i_comp;
@@ -23,7 +23,7 @@ begin
         p_s  => '0',
         p_d  => p_opd,
         p_cl => p_ctrl(8), -- CU0
-        p_en => p_en,
+        p_en => p_cmd(25), -- ICMP
         p_q  => s_opd
     );
 
@@ -36,7 +36,7 @@ begin
         p_s  => '0',
         p_d  => p_ops,
         p_cl => p_ctrl(8), -- CU0
-        p_en => p_en,
+        p_en => p_cmd(25), -- ICMP
         p_q  => s_ops
     );
 
@@ -47,7 +47,7 @@ begin
     port map (
         p_a  => s_opd,
         p_b  => s_ops,
-        p_en => p_en,
+        p_en => p_cmd(25), -- ICMP
         p_l  => p_f(5),
         p_e  => p_f(6),
         p_g  => p_f(7)
