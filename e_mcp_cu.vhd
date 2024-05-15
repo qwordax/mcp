@@ -43,6 +43,13 @@ begin
         p_fl   => s_i_comp_fl
     );
 
+    l_i_abs: entity work.e_mcp_cu_i_abs
+    port map (
+        p_opd => p_opd,
+        p_cmd => p_cmd,
+        p_q   => open
+    );
+
     l_i_comp: entity work.e_mcp_cu_i_comp
     port map (
         p_opd  => p_opd,
@@ -64,13 +71,6 @@ begin
     port map (
         p_op0 => p_op0,
         p_op1 => p_op1,
-        p_cmd => p_cmd,
-        p_q   => open
-    );
-
-    l_abs: entity work.e_mcp_cu_abs
-    port map (
-        p_op  => p_op0,
         p_cmd => p_cmd,
         p_q   => open
     );
