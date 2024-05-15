@@ -37,7 +37,7 @@ begin
     port map (
         p_r  => '0',
         p_s  => '0',
-        p_cl => p_ctrl(4),
+        p_cl => p_ctrl(4), -- RC
         p_en => '1',
         p_q  => s_en
     );

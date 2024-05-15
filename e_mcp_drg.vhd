@@ -5,12 +5,12 @@ use ieee.std_logic_1164.all;
 
 entity e_mcp_drg is
 port (
-    p_rs:   in    std_logic_vector(2 downto 0);
     p_rd:   in    std_logic_vector(2 downto 0);
+    p_rs:   in    std_logic_vector(2 downto 0);
     p_ctrl: in    std_logic_vector(10 downto 0);
     p_d:    inout std_logic_vector(31 downto 0);
-    p_op0:  out   std_logic_vector(31 downto 0);
-    p_op1:  out   std_logic_vector(31 downto 0)
+    p_opd:  out   std_logic_vector(31 downto 0);
+    p_ops:  out   std_logic_vector(31 downto 0)
 );
 end entity e_mcp_drg;
 
@@ -42,7 +42,7 @@ begin
             p_r  => '0',
             p_s  => '0',
             p_d  => p_d,
-            p_cl => p_ctrl(5),
+            p_cl => p_ctrl(5), -- WDRG
             p_en => s_dc(i),
             p_q  => s_mem(i)
         );
@@ -55,15 +55,15 @@ begin
 
     l_op: process (p_rs, p_rd) is
     begin
-        p_op0 <= s_mem(to_integer(unsigned(p_rs)));
-        p_op1 <= s_mem(to_integer(unsigned(p_rd)));
+        p_opd <= s_mem(to_integer(unsigned(p_rd)));
+        p_ops <= s_mem(to_integer(unsigned(p_rs)));
     end process l_op;
 
     l_en: entity work.c_tff
     port map (
         p_r  => '0',
         p_s  => '0',
-        p_cl => p_ctrl(1),
+        p_cl => p_ctrl(2), -- RDRG
         p_en => '1',
         p_q  => s_en
     );
