@@ -86,7 +86,7 @@ begin
 
     l_mcp_ctrl: entity work.e_mcp_ctrl
     port map (
-        p_r    => '0',
+        p_r    => s_en_p,
         p_cmd  => s_cmd,
         p_cl   => p_cl,
         p_en   => s_en,

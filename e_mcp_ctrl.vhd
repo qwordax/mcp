@@ -400,5 +400,5 @@ begin
         end if;
     end process;
 
-    p_ctrl <= s_ctrl when p_cl = '1' else (others => '0');
+    p_ctrl <= s_ctrl when p_cl = '1' and p_en = '1' else (others => '0');
 end architecture rtl;
