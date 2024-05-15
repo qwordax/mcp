@@ -5,7 +5,7 @@ use ieee.std_logic_1164.all;
 entity e_mcp_out is
 port (
     p_d:    in  std_logic_vector(31 downto 0);
-    p_ctrl: in  std_logic_vector(10 downto 0);
+    p_ctrl: in  std_logic_vector(11 downto 0);
     p_q:    out std_logic_vector(31 downto 0)
 );
 end entity e_mcp_out;
