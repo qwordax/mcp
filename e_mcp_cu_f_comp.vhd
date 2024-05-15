@@ -57,9 +57,9 @@ begin
         p_q  => s_ops
     );
 
-    s_s_l <= s_opd(31) and not s_ops(31) and p_cmd(36);
-    s_s_e <= s_opd(31) xnor s_ops(31) and p_cmd(36);
-    s_s_g <= not s_opd(31) and s_ops(31) and p_cmd(36);
+    s_s_l <= (s_opd(31) and not s_ops(31)) and p_cmd(36);
+    s_s_e <= (s_opd(31) xnor s_ops(31)) and p_cmd(36);
+    s_s_g <= (not s_opd(31) and s_ops(31)) and p_cmd(36);
 
     s_e_en <= s_s_e and p_cmd(36);
 
@@ -91,7 +91,7 @@ begin
         p_g  => s_m_g
     );
 
-    fl <= s_m_g & s_m_e & s_m_l when s_e_e = '1' else
-          s_e_g & s_e_e & s_e_l when s_s_e = '1' else
-          s_s_g & s_s_e & s_s_l;
+    p_fl <= s_m_g & s_m_e & s_m_l when s_e_e = '1' else
+            s_e_g & s_e_e & s_e_l when s_s_e = '1' else
+            s_s_g & s_s_e & s_s_l;
 end architecture rtl;

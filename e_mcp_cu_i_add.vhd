@@ -16,6 +16,9 @@ end entity e_mcp_cu_i_add;
 architecture rtl of e_mcp_cu_i_add is
     signal s_en: std_logic;
 
+    signal s_opd: std_logic_vector(31 downto 0);
+    signal s_ops: std_logic_vector(31 downto 0);
+
     signal s_ci: std_logic;
     signal s_a:  std_logic_vector(31 downto 0);
     signal s_b:  std_logic_vector(31 downto 0);

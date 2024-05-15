@@ -6,10 +6,10 @@ entity e_mcp_cu is
 port (
     p_opd:  in  std_logic_vector(31 downto 0);
     p_ops:  in  std_logic_vector(31 downto 0);
-    p_cmd:  in  std_logic_vector(37 downto 0);
+    p_cmd:  in  std_logic_vector(36 downto 0);
     p_ctrl: in  std_logic_vector(10 downto 0);
     p_q:    out std_logic_vector(31 downto 0);
-    p_fl    out std_logic_vector(9 downto 1)
+    p_fl:   out std_logic_vector(9 downto 1)
 );
 end entity e_mcp_cu;
 
@@ -20,16 +20,17 @@ architecture rtl of e_mcp_cu is
     signal s_f_comp_fl: std_logic_vector(7 downto 5);
     signal s_i_comp_fl: std_logic_vector(7 downto 5);
 
-    signal s_i_add_fl: std_logic_vector(4 downto 0);
+    signal s_i_add_fl: std_logic_vector(4 downto 3);
 
     signal s_d:  std_logic_vector(31 downto 0);
     signal s_en: std_logic;
 begin
     l_f_abs: entity work.e_mcp_cu_f_abs
     port map (
-        p_opd => p_opd,
-        p_cmd => p_cmd,
-        p_q   => open
+        p_opd  => p_opd,
+        p_cmd  => p_cmd,
+        p_ctrl => p_ctrl,
+        p_q    => open
     );
 
     l_f_chs: entity work.e_mcp_cu_f_chs

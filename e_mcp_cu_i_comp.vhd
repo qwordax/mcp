@@ -13,6 +13,8 @@ port (
 end entity e_mcp_cu_i_comp;
 
 architecture rtl of e_mcp_cu_i_comp is
+    signal s_opd: std_logic_vector(31 downto 0);
+    signal s_ops: std_logic_vector(31 downto 0);
 begin
     l_opd: entity work.c_rg
     generic map (
@@ -48,8 +50,8 @@ begin
         p_a  => s_opd,
         p_b  => s_ops,
         p_en => p_cmd(25), -- ICMP
-        p_l  => p_f(5),
-        p_e  => p_f(6),
-        p_g  => p_f(7)
+        p_l  => p_fl(5),
+        p_e  => p_fl(6),
+        p_g  => p_fl(7)
     );
 end architecture rtl;

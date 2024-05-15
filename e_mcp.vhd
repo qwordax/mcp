@@ -11,7 +11,7 @@ port (
     p_st: in  std_logic;
     p_cl: in  std_logic;
     p_q:  out std_logic_vector(31 downto 0);
-    p_f:  out std_logic_vector(8 downto 0)
+    p_fl: out std_logic_vector(9 downto 1)
 );
 end entity e_mcp;
 
@@ -21,11 +21,11 @@ architecture rtl of e_mcp is
     signal s_rd: std_logic_vector(2 downto 0);
     signal s_d:  std_logic_vector(31 downto 0);
     signal s_q:  std_logic_vector(31 downto 0);
-    signal s_f:  std_logic_vector(7 downto 0);
+    signal s_fl: std_logic_vector(8 downto 0);
 
-    signal s_cmd: std_logic_vector(37 downto 0);
-    signal s_op0: std_logic_vector(31 downto 0);
-    signal s_op1: std_logic_vector(31 downto 0);
+    signal s_cmd: std_logic_vector(36 downto 0);
+    signal s_opd: std_logic_vector(31 downto 0);
+    signal s_ops: std_logic_vector(31 downto 0);
 
     signal s_bus_d:    std_logic_vector(31 downto 0);
     signal s_bus_ctrl: std_logic_vector(10 downto 0);
@@ -78,19 +78,18 @@ begin
     l_mcp_in: entity work.e_mcp_in
     port map (
         p_d    => p_d,
-        p_st   => p_st,
         p_ctrl => s_bus_ctrl,
         p_q    => s_bus_d
     );
 
     l_mcp_cu: entity work.e_mcp_cu
     port map (
-        p_op0  => s_op0,
-        p_op1  => s_op1,
+        p_opd  => s_opd,
+        p_ops  => s_ops,
         p_cmd  => s_cmd,
         p_ctrl => s_bus_ctrl,
         p_q    => s_bus_d,
-        p_f    => s_f
+        p_fl   => s_fl
     );
 
     l_mcp_const: entity work.e_mcp_const
@@ -106,8 +105,8 @@ begin
         p_rd   => s_rd,
         p_ctrl => s_bus_ctrl,
         p_d    => s_bus_d,
-        p_op0  => s_op0,
-        p_op1  => s_op1
+        p_opd  => s_opd,
+        p_ops  => s_ops
     );
 
     l_mcp_out: entity work.e_mcp_out

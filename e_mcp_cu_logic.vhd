@@ -6,7 +6,7 @@ entity e_mcp_cu_logic is
 port (
     p_opd:  in  std_logic_vector(31 downto 0);
     p_ops:  in  std_logic_vector(31 downto 0);
-    p_cmd:  in  std_logic_vector(37 downto 0);
+    p_cmd:  in  std_logic_vector(36 downto 0);
     p_ctrl: in  std_logic_vector(10 downto 0);
     p_q:    out std_logic_vector(31 downto 0)
 );

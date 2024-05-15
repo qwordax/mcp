@@ -7,7 +7,7 @@ port (
     p_k:      in  std_logic_vector(3 downto 0);
     p_sw:     in  std_logic_vector(3 downto 0);
     p_cl:     in  std_logic;
-    p_led:    out std_logic_vector(8 downto 0);
+    p_led:    out std_logic_vector(9 downto 0);
     p_sd_sg:  out std_logic_vector(7 downto 0);
     p_sd_cs:  out std_logic_vector(7 downto 0);
     p_lcd_rs: out std_logic;
@@ -38,7 +38,7 @@ architecture rtl of e_top is
     signal s_mcp_rd: std_logic_vector(2 downto 0);
     signal s_mcp_d:  std_logic_vector(31 downto 0);
     signal s_mcp_q:  std_logic_vector(31 downto 0);
-    signal s_mcp_f:  std_logic_vector(8 downto 0);
+    signal s_mcp_fl: std_logic_vector(9 downto 1);
 
     signal s_in_ml: std_logic;
 
@@ -163,10 +163,10 @@ begin
         p_st => s_sw(3),
         p_cl => p_cl,
         p_q  => s_mcp_q,
-        p_f  => s_mcp_f
+        p_fl => s_mcp_fl
     );
 
-    p_led <= not s_mcp_f;
+    p_led <= not s_mcp_fl & '1';
 
     s_sd_d  <= s_mcp_q when s_sw(1) = '0' else s_mcp_d;
     s_sd_ml <= s_in_ml when s_mode = "100" else s_sw(0);
