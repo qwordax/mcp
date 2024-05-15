@@ -14,8 +14,8 @@ port (
 end entity e_mcp_cu;
 
 architecture rtl of e_mcp_cu is
-    signal s_logic_en: std_logic;
-    signal s_logic_q:  std_logic_vector(31 downto 0);
+    signal s_opd: std_logic_vector(31 downto 0);
+    signal s_ops: std_logic_vector(31 downto 0);
 
     signal s_f_comp_fl: std_logic_vector(7 downto 5);
     signal s_i_comp_fl: std_logic_vector(7 downto 5);
@@ -25,82 +25,93 @@ architecture rtl of e_mcp_cu is
     signal s_d:  std_logic_vector(31 downto 0);
     signal s_en: std_logic;
 begin
+    l_opd: entity work.c_rg
+    generic map (
+        g_width => 32
+    )
+    port map (
+        p_r  => '0',
+        p_s  => '0',
+        p_d  => p_opd,
+        p_cl => p_ctrl(8), -- CU0
+        p_en => '1',
+        p_q  => s_opd
+    );
+
+    l_ops: entity work.c_rg
+    generic map (
+        g_width => 32
+    )
+    port map (
+        p_r  => '0',
+        p_s  => '0',
+        p_d  => p_ops,
+        p_cl => p_ctrl(8), -- CU0
+        p_en => '1',
+        p_q  => s_ops
+    );
+
     l_f_abs: entity work.e_mcp_cu_f_abs
     port map (
-        p_opd  => p_opd,
-        p_cmd  => p_cmd,
-        p_ctrl => p_ctrl,
-        p_q    => open
+        p_opd => s_opd,
+        p_q   => open
     );
 
     l_f_chs: entity work.e_mcp_cu_f_chs
     port map (
-        p_opd  => p_opd,
-        p_cmd  => p_cmd,
-        p_ctrl => p_ctrl,
-        p_q    => open
+        p_opd => s_opd,
+        p_q   => open
     );
 
     l_f_comp: entity work.e_mcp_cu_f_comp
     port map (
-        p_opd  => p_opd,
-        p_ops  => p_ops,
-        p_cmd  => p_cmd,
-        p_ctrl => p_ctrl,
-        p_fl   => s_i_comp_fl
+        p_opd => s_opd,
+        p_ops => s_ops,
+        p_fl  => s_i_comp_fl
     );
 
     l_i_abs: entity work.e_mcp_cu_i_abs
     port map (
-        p_opd  => p_opd,
-        p_cmd  => p_cmd,
-        p_ctrl => p_ctrl,
-        p_q    => open
+        p_opd => s_opd,
+        p_q   => open
     );
 
     l_i_add: entity work.e_mcp_cu_i_add
     port map (
-        p_opd  => p_opd,
-        p_ops  => p_ops,
-        p_cmd  => p_cmd,
-        p_ctrl => p_ctrl,
-        p_q    => open,
-        p_fl   => s_i_add_fl
+        p_opd => s_opd,
+        p_ops => s_ops,
+        p_cmd => p_cmd,
+        p_q   => open,
+        p_fl  => s_i_add_fl
     );
 
     l_i_chs: entity work.e_mcp_cu_i_chs
     port map (
-        p_opd  => p_opd,
-        p_cmd  => p_cmd,
-        p_ctrl => p_ctrl,
-        p_q    => open
+        p_opd => s_opd,
+        p_q   => open
     );
 
     l_i_comp: entity work.e_mcp_cu_i_comp
     port map (
-        p_opd  => p_opd,
-        p_ops  => p_ops,
-        p_cmd  => p_cmd,
-        p_ctrl => p_ctrl,
-        p_fl   => s_i_comp_fl
+        p_opd => s_opd,
+        p_ops => s_ops,
+        p_fl  => s_i_comp_fl
     );
 
     l_logic: entity work.e_mcp_cu_logic
     port map (
-        p_opd  => p_opd,
-        p_ops  => p_ops,
-        p_cmd  => p_cmd,
-        p_ctrl => p_ctrl,
-        p_q    => open
+        p_opd => s_opd,
+        p_ops => s_ops,
+        p_cmd => p_cmd,
+        p_q   => open
     );
 
     l_shift: entity work.e_mcp_cu_shift
     port map (
-        p_opd  => p_opd,
-        p_ops  => p_ops,
-        p_cmd  => p_cmd,
-        p_ctrl => p_ctrl,
-        p_q    => open
+        p_opd => s_opd,
+        p_ops => s_ops,
+        p_cmd => p_cmd,
+        p_q   => open
     );
 
     l_en: entity work.c_tff
