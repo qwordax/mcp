@@ -34,6 +34,20 @@ begin
         p_q    => s_logic_q
     );
 
+    l_f_abs: entity work.e_mcp_cu_f_abs
+    port map (
+        p_opd => p_opd,
+        p_cmd => p_cmd,
+        p_q   => open
+    );
+
+    l_f_chs: entity work.e_mcp_cu_f_chs
+    port map (
+        p_opd => p_opd,
+        p_cmd => p_cmd,
+        p_q   => open
+    );
+
     l_f_comp: entity work.e_mcp_cu_f_comp
     port map (
         p_opd  => p_opd,
