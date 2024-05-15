@@ -38,7 +38,7 @@ architecture rtl of e_top is
     signal s_mcp_rd: std_logic_vector(2 downto 0);
     signal s_mcp_d:  std_logic_vector(31 downto 0);
     signal s_mcp_q:  std_logic_vector(31 downto 0);
-    signal s_mcp_fl: std_logic_vector(9 downto 1);
+    signal s_mcp_fl: std_logic_vector(9 downto 0);
 
     signal s_in_ml: std_logic;
 
@@ -96,19 +96,6 @@ begin
         p_mode => s_mode(2 downto 0)
     );
 
-    s_rs_en <= s_k(2) and not s_mode(2);
-
-    l_rs: entity work.c_ctr
-    generic map (
-        g_width => 3
-    )
-    port map (
-        p_r  => '0',
-        p_cl => s_ctrl_cl,
-        p_en => s_rs_en,
-        p_q  => s_mcp_rs
-    );
-
     s_rd_en <= s_k(3) and not s_mode(2);
 
     l_rd: entity work.c_ctr
@@ -120,6 +107,19 @@ begin
         p_cl => s_ctrl_cl,
         p_en => s_rd_en,
         p_q  => s_mcp_rd
+    );
+
+    s_rs_en <= s_k(2) and not s_mode(2);
+
+    l_rs: entity work.c_ctr
+    generic map (
+        g_width => 3
+    )
+    port map (
+        p_r  => '0',
+        p_cl => s_ctrl_cl,
+        p_en => s_rs_en,
+        p_q  => s_mcp_rs
     );
 
     l_in: entity work.e_top_in
@@ -157,8 +157,8 @@ begin
     l_mcp: entity work.e_mcp
     port map (
         p_op => s_mcp_op,
-        p_rs => s_mcp_rs,
         p_rd => s_mcp_rd,
+        p_rs => s_mcp_rs,
         p_d  => s_mcp_d,
         p_st => s_sw(3),
         p_cl => p_cl,
@@ -166,7 +166,7 @@ begin
         p_fl => s_mcp_fl
     );
 
-    p_led <= not s_mcp_fl & '1';
+    p_led <= not s_mcp_fl;
 
     s_sd_d  <= s_mcp_q when s_sw(1) = '0' else s_mcp_d;
     s_sd_ml <= s_in_ml when s_mode = "100" else s_sw(0);
