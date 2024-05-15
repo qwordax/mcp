@@ -72,24 +72,22 @@ begin
         p_fl   => s_i_comp_fl
     );
 
-    s_logic_en <= p_cmd(4) or p_cmd(5) or p_cmd(6) or p_cmd(7) or p_cmd(8) or p_cmd(9) or p_cmd(10);
-
     l_logic: entity work.e_mcp_cu_logic
     port map (
         p_opd  => p_opd,
         p_ops  => p_ops,
         p_cmd  => p_cmd,
         p_ctrl => p_ctrl,
-        p_en   => s_logic_en,
-        p_q    => s_logic_q
+        p_q    => open
     );
 
     l_shift: entity work.e_mcp_cu_shift
     port map (
-        p_op0 => p_op0,
-        p_op1 => p_op1,
-        p_cmd => p_cmd,
-        p_q   => open
+        p_opd  => p_opd,
+        p_ops  => p_ops,
+        p_cmd  => p_cmd,
+        p_ctrl => p_ctrl,
+        p_q    => open
     );
 
     l_iadd: entity work.e_mcp_cu_iadd
