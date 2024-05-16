@@ -30,15 +30,8 @@ begin
         s_en  <= '0';
         wait for 40 ns;
 
-        s_cmd(3) <= '1';
-        s_en     <= '1';
-        wait for 200 ns;
-
-        s_r      <= '1';
-        s_cmd(3) <= '0';
-        wait for 20 ns;
-
-        s_r <= '0';
+        s_cmd(23) <= '1';
+        s_en      <= '1';
         wait;
     end process;
 end architecture rtl;

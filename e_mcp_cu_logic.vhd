@@ -18,19 +18,19 @@ architecture rtl of e_mcp_cu_logic is
 begin
     process (p_opd, p_ops, p_cmd) is
     begin
-        if p_cmd(3) = '1' then
+        if p_cmd(3) = '1' then -- NOT
             s_q <= not p_opd;
-        elsif p_cmd(4) = '1' then
+        elsif p_cmd(4) = '1' then -- AND
             s_q <= p_opd and p_ops;
-        elsif p_cmd(5) = '1' then
+        elsif p_cmd(5) = '1' then -- OR
             s_q <= p_opd or p_ops;
-        elsif p_cmd(6) = '1' then
+        elsif p_cmd(6) = '1' then -- XOR
             s_q <= p_opd xor p_ops;
-        elsif p_cmd(7) = '1' then
+        elsif p_cmd(7) = '1' then -- NAND
             s_q <= p_opd nand p_ops;
-        elsif p_cmd(8) = '1' then
+        elsif p_cmd(8) = '1' then -- NOR
             s_q <= p_opd nor p_ops;
-        elsif p_cmd(9) = '1' then
+        elsif p_cmd(9) = '1' then -- XNOR
             s_q <= p_opd xnor p_ops;
         else
             s_q <= (others => '0');

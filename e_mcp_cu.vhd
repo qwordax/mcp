@@ -7,6 +7,7 @@ port (
     p_opd:  in  std_logic_vector(31 downto 0);
     p_ops:  in  std_logic_vector(31 downto 0);
     p_cmd:  in  std_logic_vector(36 downto 0);
+    p_cl:   in  std_logic;
     p_ctrl: in  std_logic_vector(11 downto 0);
     p_q:    out std_logic_vector(31 downto 0);
     p_fl:   out std_logic_vector(9 downto 1)
@@ -34,8 +35,8 @@ begin
         p_r  => '0',
         p_s  => '0',
         p_d  => p_opd,
-        p_cl => p_ctrl(8), -- CU0
-        p_en => '1',
+        p_cl => p_cl,
+        p_en => p_ctrl(8), -- CU0
         p_q  => s_opd
     );
 
@@ -47,8 +48,8 @@ begin
         p_r  => '0',
         p_s  => '0',
         p_d  => p_ops,
-        p_cl => p_ctrl(8), -- CU0
-        p_en => '1',
+        p_cl => p_cl,
+        p_en => p_ctrl(8), -- CU0
         p_q  => s_ops
     );
 
@@ -108,6 +109,7 @@ begin
         p_opd  => s_opd,
         p_ops  => s_ops,
         p_cmd  => p_cmd,
+        p_cl   => p_cl,
         p_ctrl => p_ctrl,
         p_q    => s_d(7),
         p_fl   => s_fl(7)
@@ -191,8 +193,8 @@ begin
     port map (
         p_r  => '0',
         p_s  => '0',
-        p_cl => p_ctrl(3), -- RCU
-        p_en => '1',
+        p_cl => p_cl,
+        p_en => p_ctrl(3), -- RCU
         p_q  => s_en
     );
 

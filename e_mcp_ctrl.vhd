@@ -34,7 +34,7 @@ begin
         if p_r = '1' then
             v_tmp := 0;
         elsif p_cl'event and p_cl = '0' and p_en = '1' then
-            if v_tmp < 31 then
+            if v_tmp < 100 then
                 v_tmp := v_tmp + 1;
             else
                 v_tmp := 0;
@@ -285,14 +285,12 @@ begin
             case v_tmp is
                 when 0       => s_ctrl(C_ST)  <= '1';
                 when 1       => s_ctrl(C_CU0) <= '1';
-                when 2       => s_ctrl(C_CU1) <= '1';
-                when 3 to 67 => s_ctrl(C_CU2) <= '1';
-                when 68      => s_ctrl(C_CU1) <= '1';
+                when 2 to 66 => s_ctrl(C_CU1) <= '1';
+                when 67      => s_ctrl(C_RCU) <= '1';
+                when 68      => s_ctrl(C_WDR) <= '1';
                 when 69      => s_ctrl(C_RCU) <= '1';
-                when 70      => s_ctrl(C_WDR) <= '1';
-                when 71      => s_ctrl(C_RCU) <= '1';
-                when 72      => s_ctrl(C_WFL) <= '1';
-                when 73      => s_ctrl(C_BSY) <= '1';
+                when 70      => s_ctrl(C_WFL) <= '1';
+                when 71      => s_ctrl(C_BSY) <= '1';
                 when others => null;
             end case;
         elsif p_cmd(24) = '1' then -- IDIV
@@ -408,5 +406,5 @@ begin
         end if;
     end process;
 
-    p_ctrl <= s_ctrl when p_cl = '1' and p_en = '1' else (others => '0');
+    p_ctrl <= s_ctrl when p_en = '1' else (others => '0');
 end architecture rtl;

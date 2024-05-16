@@ -102,6 +102,7 @@ begin
     l_mcp_in: entity work.e_mcp_in
     port map (
         p_d    => p_d,
+        p_cl   => p_cl,
         p_ctrl => s_bus_ctrl,
         p_q    => s_bus_d
     );
@@ -111,6 +112,7 @@ begin
         p_opd  => s_opd,
         p_ops  => s_ops,
         p_cmd  => s_cmd,
+        p_cl   => p_cl,
         p_ctrl => s_bus_ctrl,
         p_q    => s_bus_d,
         p_fl   => s_fl
@@ -119,6 +121,7 @@ begin
     l_mcp_const: entity work.e_mcp_const
     port map (
         p_cmd  => s_cmd,
+        p_cl   => p_cl,
         p_ctrl => s_bus_ctrl,
         p_q    => s_bus_d
     );
@@ -127,6 +130,7 @@ begin
     port map (
         p_rs   => s_rs,
         p_rd   => s_rd,
+        p_cl   => p_cl,
         p_ctrl => s_bus_ctrl,
         p_d    => s_bus_d,
         p_opd  => s_opd,
@@ -136,6 +140,7 @@ begin
     l_mcp_out: entity work.e_mcp_out
     port map (
         p_d    => s_bus_d,
+        p_cl   => p_cl,
         p_ctrl => s_bus_ctrl,
         p_q    => p_q
     );
@@ -148,8 +153,8 @@ begin
         p_r  => '0',
         p_s  => '0',
         p_d  => s_fl,
-        p_cl => s_bus_ctrl(7), -- WFL
-        p_en => '1',
+        p_cl => p_cl,
+        p_en => s_bus_ctrl(7), -- WFL
         p_q  => p_fl(9 downto 1)
     );
 
