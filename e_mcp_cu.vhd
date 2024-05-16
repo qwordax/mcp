@@ -21,6 +21,7 @@ architecture rtl of e_mcp_cu is
     signal s_i_comp_fl: std_logic_vector(7 downto 5);
 
     signal s_i_add_fl: std_logic_vector(4 downto 3);
+    signal s_i_mul_fl: std_logic_vector(4 downto 3);
 
     signal s_d:  std_logic_vector(31 downto 0);
     signal s_en: std_logic;
@@ -96,6 +97,16 @@ begin
         p_opd => s_opd,
         p_ops => s_ops,
         p_fl  => s_i_comp_fl
+    );
+
+    l_i_mul: entity work.e_mcp_cu_i_mul
+    port map (
+        p_opd  => s_opd,
+        p_ops  => s_ops,
+        p_cmd  => p_cmd,
+        p_ctrl => p_ctrl,
+        p_q    => open,
+        p_fl   => s_i_mul_fl
     );
 
     l_logic: entity work.e_mcp_cu_logic
