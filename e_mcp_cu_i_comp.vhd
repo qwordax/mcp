@@ -6,7 +6,7 @@ entity e_mcp_cu_i_comp is
 port (
     p_opd: in  std_logic_vector(31 downto 0);
     p_ops: in  std_logic_vector(31 downto 0);
-    p_fl:  out std_logic_vector(7 downto 5)
+    p_fl:  out std_logic_vector(9 downto 1)
 );
 end entity e_mcp_cu_i_comp;
 
@@ -24,4 +24,7 @@ begin
         p_e  => p_fl(6),
         p_g  => p_fl(7)
     );
+
+    p_fl(4 downto 1) <= (others => '0');
+    p_fl(9 downto 8) <= (others => '0');
 end architecture rtl;

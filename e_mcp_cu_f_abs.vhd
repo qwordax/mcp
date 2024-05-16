@@ -1,15 +1,23 @@
 library ieee;
 
+use ieee.numeric_std.all;
 use ieee.std_logic_1164.all;
 
 entity e_mcp_cu_f_abs is
 port (
     p_opd: in  std_logic_vector(31 downto 0);
-    p_q:   out std_logic_vector(31 downto 0)
+    p_q:   out std_logic_vector(31 downto 0);
+    p_fl:  out std_logic_vector(9 downto 1)
 );
 end entity e_mcp_cu_f_abs;
 
 architecture rtl of e_mcp_cu_f_abs is
+    signal s_q: std_logic_vector(31 downto 0);
 begin
-    p_q <= '0' & p_opd(30 downto 0);
+    s_q <= '0' & p_opd(30 downto 0);
+
+    p_fl(1)          <= '1' when to_integer(unsigned(s_q(30 downto 0))) = 0 else '0';
+    p_fl(9 downto 2) <= (others => '0');
+
+    p_q <= s_q;
 end architecture rtl;

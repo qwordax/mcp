@@ -120,8 +120,6 @@ begin
             when "101100" => s_cgram(0 to 3) <= (C_F,  C_M,  C_U,  C_L );
             when "101101" => s_cgram(0 to 3) <= (C_F,  C_D,  C_I,  C_V );
             when "101111" => s_cgram(0 to 3) <= (C_F,  C_C,  C_M,  C_P );
-            when "111000" => s_cgram(0 to 3) <= (C_I,  C_T,  C_O,  C_F );
-            when "111001" => s_cgram(0 to 3) <= (C_F,  C_T,  C_O,  C_I );
             when others => null;
         end case;
 

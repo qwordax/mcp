@@ -76,7 +76,7 @@ begin
 
     l_en: entity work.c_dff
     port map (
-        p_r  => s_bus_ctrl(11),
+        p_r  => s_bus_ctrl(11), -- BSY
         p_s  => '0',
         p_d  => s_en_p,
         p_cl => p_st,
@@ -148,7 +148,7 @@ begin
         p_r  => '0',
         p_s  => '0',
         p_d  => s_fl,
-        p_cl => s_bus_ctrl(7),
+        p_cl => s_bus_ctrl(7), -- WFL
         p_en => '1',
         p_q  => p_fl(9 downto 1)
     );

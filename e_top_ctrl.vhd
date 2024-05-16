@@ -19,8 +19,7 @@ architecture rtl of e_top_ctrl is
         C_SLA,  C_SRA,  C_ROL,  C_ROR,  C_IWR0, C_IWR1,
         C_IABS, C_ICHS, C_IADD, C_ISUB, C_IMUL, C_IDIV,
         C_ICMP, C_FWR0, C_FWR1, C_FWRP, C_FWRE, C_FABS,
-        C_FCHS, C_FADD, C_FSUB, C_FMUL, C_FDIV, C_FCMP,
-        C_ITOF, C_FTOI
+        C_FCHS, C_FADD, C_FSUB, C_FMUL, C_FDIV, C_FCMP
     );
 
     signal s_state: state := C_WR;
@@ -75,8 +74,6 @@ begin
             when C_FMUL => p_q <= "101100";
             when C_FDIV => p_q <= "101101";
             when C_FCMP => p_q <= "101111";
-            when C_ITOF => p_q <= "111000";
-            when C_FTOI => p_q <= "111001";
         end case;
     end process;
 end architecture rtl;
