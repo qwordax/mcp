@@ -15,8 +15,8 @@ port (
 end entity e_mcp_cu;
 
 architecture rtl of e_mcp_cu is
-    type d_type  is array (9 downto 0) of std_logic_vector(31 downto 0);
-    type fl_type is array (9 downto 0) of std_logic_vector(9 downto 1);
+    type d_type  is array (10 downto 0) of std_logic_vector(31 downto 0);
+    type fl_type is array (10 downto 0) of std_logic_vector(9 downto 1);
 
     signal s_d:  d_type;
     signal s_fl: fl_type;
@@ -104,7 +104,7 @@ begin
         p_fl  => s_fl(6)
     );
 
-    l_i_mul: entity work.e_mcp_cu_i_mul
+    l_i_div: entity work.e_mcp_cu_i_div
     port map (
         p_opd  => s_opd,
         p_ops  => s_ops,
@@ -115,13 +115,24 @@ begin
         p_fl   => s_fl(7)
     );
 
+    l_i_mul: entity work.e_mcp_cu_i_mul
+    port map (
+        p_opd  => s_opd,
+        p_ops  => s_ops,
+        p_cmd  => p_cmd,
+        p_cl   => p_cl,
+        p_ctrl => p_ctrl,
+        p_q    => s_d(8),
+        p_fl   => s_fl(8)
+    );
+
     l_logic: entity work.e_mcp_cu_logic
     port map (
         p_opd => s_opd,
         p_ops => s_ops,
         p_cmd => p_cmd,
-        p_q   => s_d(8),
-        p_fl  => s_fl(8)
+        p_q   => s_d(9),
+        p_fl  => s_fl(9)
     );
 
     l_shift: entity work.e_mcp_cu_shift
@@ -129,8 +140,8 @@ begin
         p_opd => s_opd,
         p_ops => s_ops,
         p_cmd => p_cmd,
-        p_q   => s_d(9),
-        p_fl  => s_fl(9)
+        p_q   => s_d(10),
+        p_fl  => s_fl(10)
     );
 
     process (p_cmd) is
@@ -141,6 +152,7 @@ begin
         variable v_i_add:  std_logic;
         variable v_i_chs:  std_logic;
         variable v_i_comp: std_logic;
+        variable v_i_div:  std_logic;
         variable v_i_mul:  std_logic;
         variable v_logic:  std_logic;
         variable v_shift:  std_logic;
@@ -152,6 +164,7 @@ begin
         v_i_add  := p_cmd(21) or p_cmd(22);
         v_i_chs  := p_cmd(20);
         v_i_comp := p_cmd(25);
+        v_i_div  := p_cmd(24);
         v_i_mul  := p_cmd(23);
         v_logic  := p_cmd(4) or p_cmd(5) or p_cmd(6) or p_cmd(7) or p_cmd(8) or p_cmd(9) or p_cmd(10);
         v_shift  := p_cmd(11) or p_cmd(12) or p_cmd(13) or p_cmd(14) or p_cmd(15) or p_cmd(16);
@@ -177,15 +190,18 @@ begin
         elsif v_i_comp = '1' then
             s_q  <= (others => '0');
             p_fl <= s_fl(6);
-        elsif v_i_mul = '1' then
+        elsif v_i_div = '1' then
             s_q  <= s_d(7);
             p_fl <= s_fl(7);
-        elsif v_logic = '1' then
+        elsif v_i_mul = '1' then
             s_q  <= s_d(8);
             p_fl <= s_fl(8);
-        elsif v_shift = '1' then
+        elsif v_logic = '1' then
             s_q  <= s_d(9);
             p_fl <= s_fl(9);
+        elsif v_shift = '1' then
+            s_q  <= s_d(10);
+            p_fl <= s_fl(10);
         end if;
     end process;
 
