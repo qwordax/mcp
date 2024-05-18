@@ -10,7 +10,7 @@ architecture rtl of t_mcp_ctrl is
     signal s_cmd:  std_logic_vector(36 downto 0);
     signal s_cl:   std_logic := '0';
     signal s_en:   std_logic;
-    signal s_ctrl: std_logic_vector(11 downto 0);
+    signal s_ctrl: std_logic_vector(13 downto 0);
 begin
     uut: entity work.e_mcp_ctrl
     port map (
@@ -30,7 +30,7 @@ begin
         s_en  <= '0';
         wait for 40 ns;
 
-        s_cmd(23) <= '1';
+        s_cmd(17) <= '1';
         s_en      <= '1';
         wait;
     end process;

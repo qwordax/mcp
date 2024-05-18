@@ -8,7 +8,7 @@ port (
     p_rd:   in    std_logic_vector(2 downto 0);
     p_rs:   in    std_logic_vector(2 downto 0);
     p_cl:   in    std_logic;
-    p_ctrl: in    std_logic_vector(11 downto 0);
+    p_ctrl: in    std_logic_vector(13 downto 0);
     p_d:    inout std_logic_vector(31 downto 0);
     p_opd:  out   std_logic_vector(31 downto 0);
     p_ops:  out   std_logic_vector(31 downto 0)

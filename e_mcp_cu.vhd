@@ -8,7 +8,7 @@ port (
     p_ops:  in  std_logic_vector(31 downto 0);
     p_cmd:  in  std_logic_vector(36 downto 0);
     p_cl:   in  std_logic;
-    p_ctrl: in  std_logic_vector(11 downto 0);
+    p_ctrl: in  std_logic_vector(13 downto 0);
     p_q:    out std_logic_vector(31 downto 0);
     p_fl:   out std_logic_vector(9 downto 1)
 );
@@ -202,6 +202,9 @@ begin
         elsif v_shift = '1' then
             s_q  <= s_d(10);
             p_fl <= s_fl(10);
+        else
+            s_q  <= (others => '0');
+            p_fl <= (others => '0');
         end if;
     end process;
 

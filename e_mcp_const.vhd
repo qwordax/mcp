@@ -6,7 +6,7 @@ entity e_mcp_const is
 port (
     p_cmd:  in  std_logic_vector(36 downto 0);
     p_cl:   in  std_logic;
-    p_ctrl: in  std_logic_vector(11 downto 0);
+    p_ctrl: in  std_logic_vector(13 downto 0);
     p_q:    out std_logic_vector(31 downto 0)
 );
 end entity e_mcp_const;
