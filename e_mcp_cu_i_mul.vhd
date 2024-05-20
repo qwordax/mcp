@@ -11,7 +11,8 @@ port (
     p_cl:   in  std_logic;
     p_ctrl: in  std_logic_vector(13 downto 0);
     p_q:    out std_logic_vector(31 downto 0);
-    p_fl:   out std_logic_vector(9 downto 1)
+    p_fl:   out std_logic_vector(9 downto 1);
+    p_ex:   out std_logic_vector(3 downto 0)
 );
 end entity e_mcp_cu_i_mul;
 

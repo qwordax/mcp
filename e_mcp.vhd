@@ -25,6 +25,7 @@ architecture rtl of e_mcp is
     signal s_d:  std_logic_vector(31 downto 0);
     signal s_q:  std_logic_vector(31 downto 0);
     signal s_fl: std_logic_vector(8 downto 0);
+    signal s_ex: std_logic_vector(3 downto 0);
 
     signal s_cmd: std_logic_vector(36 downto 0);
     signal s_opd: std_logic_vector(31 downto 0);
@@ -72,22 +73,22 @@ begin
         p_q  => s_rs
     );
 
-    s_en_p <= not s_en;
-
-    l_en: entity work.c_dff
+    l_en: entity work.c_tff
     port map (
         p_r  => s_bus_ctrl(13), -- BSY
         p_s  => '0',
-        p_d  => s_en_p,
         p_cl => p_st,
-        p_en => '1',
+        p_en => s_en_p,
         p_q  => s_en
     );
+
+    s_en_p <= not s_en;
 
     l_mcp_ctrl: entity work.e_mcp_ctrl
     port map (
         p_r    => s_en_p,
         p_cmd  => s_cmd,
+        p_ex   => s_ex,
         p_cl   => p_cl,
         p_en   => s_en,
         p_ctrl => s_bus_ctrl
@@ -115,7 +116,8 @@ begin
         p_cl   => p_cl,
         p_ctrl => s_bus_ctrl,
         p_q    => s_bus_d,
-        p_fl   => s_fl
+        p_fl   => s_fl,
+        p_ex   => s_ex
     );
 
     l_mcp_const: entity work.e_mcp_const
@@ -128,8 +130,8 @@ begin
 
     l_mcp_drg: entity work.e_mcp_drg
     port map (
-        p_rs   => s_rs,
         p_rd   => s_rd,
+        p_rs   => s_rs,
         p_cl   => p_cl,
         p_ctrl => s_bus_ctrl,
         p_d    => s_bus_d,

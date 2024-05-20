@@ -96,7 +96,7 @@ begin
         p_mode => s_mode(2 downto 0)
     );
 
-    s_rd_en <= s_k(3) and not s_mode(2);
+    s_rd_en <= s_k(2) and not s_mode(2);
 
     l_rd: entity work.c_ctr
     generic map (
@@ -109,7 +109,7 @@ begin
         p_q  => s_mcp_rd
     );
 
-    s_rs_en <= s_k(2) and not s_mode(2);
+    s_rs_en <= s_k(3) and not s_mode(2);
 
     l_rs: entity work.c_ctr
     generic map (
@@ -144,8 +144,8 @@ begin
     l_lcd: entity work.e_top_lcd
     port map (
         p_op     => s_mcp_op,
-        p_rs     => s_mcp_rs,
         p_rd     => s_mcp_rd,
+        p_rs     => s_mcp_rs,
         p_mode   => s_mode,
         p_cl     => s_lcd_cl,
         p_lcd_rs => p_lcd_rs,

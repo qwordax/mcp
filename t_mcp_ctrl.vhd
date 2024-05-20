@@ -8,6 +8,7 @@ end entity t_mcp_ctrl;
 architecture rtl of t_mcp_ctrl is
     signal s_r:    std_logic;
     signal s_cmd:  std_logic_vector(36 downto 0);
+    signal s_ex:   std_logic_vector(3 downto 0) := (others => '0');
     signal s_cl:   std_logic := '0';
     signal s_en:   std_logic;
     signal s_ctrl: std_logic_vector(13 downto 0);
@@ -16,6 +17,7 @@ begin
     port map (
         p_r    => s_r,
         p_cmd  => s_cmd,
+        p_ex   => s_ex,
         p_cl   => s_cl,
         p_en   => s_en,
         p_ctrl => s_ctrl
@@ -30,8 +32,8 @@ begin
         s_en  <= '0';
         wait for 40 ns;
 
-        s_cmd(17) <= '1';
-        s_en      <= '1';
+        s_cmd(2) <= '1';
+        s_en     <= '1';
         wait;
     end process;
 end architecture rtl;

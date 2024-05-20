@@ -6,8 +6,8 @@ use ieee.std_logic_unsigned.all;
 entity e_top_lcd is
 port (
     p_op:     in  std_logic_vector(5 downto 0);
-    p_rs:     in  std_logic_vector(2 downto 0);
     p_rd:     in  std_logic_vector(2 downto 0);
+    p_rs:     in  std_logic_vector(2 downto 0);
     p_mode:   in  std_logic_vector(2 downto 0);
     p_cl:     in  std_logic;
     p_lcd_rs: out std_logic;
@@ -78,9 +78,9 @@ begin
     begin
         s_cgram <= (
             C_SP, C_SP, C_SP, C_SP, C_SP, C_SP, C_SP, C_SP,
-            C_SP, C_SP, C_SP, C_SP, C_SP, C_R,  C_S,  C_SP,
+            C_SP, C_SP, C_SP, C_SP, C_SP, C_R,  C_D,  C_SP,
             C_SP, C_SP, C_SP, C_SP, C_SP, C_SP, C_SP, C_SP,
-            C_SP, C_SP, C_SP, C_SP, C_SP, C_R,  C_D,  C_SP
+            C_SP, C_SP, C_SP, C_SP, C_SP, C_R,  C_S,  C_SP
         );
 
         case p_op is
@@ -130,7 +130,7 @@ begin
             when others => null;
         end case;
 
-        case p_rs is
+        case p_rd is
             when "000" => s_cgram(15) <= C_0;
             when "001" => s_cgram(15) <= C_1;
             when "010" => s_cgram(15) <= C_2;
@@ -142,7 +142,7 @@ begin
             when others => null;
         end case;
 
-        case p_rd is
+        case p_rs is
             when "000" => s_cgram(31) <= C_0;
             when "001" => s_cgram(31) <= C_1;
             when "010" => s_cgram(31) <= C_2;
