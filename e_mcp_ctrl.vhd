@@ -8,7 +8,6 @@ port (
     p_cmd:  in  std_logic_vector(36 downto 0);
     p_ex:   in  std_logic_vector(3 downto 0);
     p_cl:   in  std_logic;
-    p_en:   in  std_logic;
     p_ctrl: out std_logic_vector(13 downto 0)
 );
 end entity e_mcp_ctrl;
@@ -30,349 +29,101 @@ begin
     begin
         if p_r = '1' then
             s_state <= C_ST;
-        elsif p_cl'event and p_cl = '0' and p_en = '1' then
-            if p_cmd(0) = '1' then
-                case s_state is
-                    when C_ST   => s_state <= C_BSY;
-                    when others => null;
-                end case;
-            elsif p_cmd(1) = '1' then -- WR
-                case s_state is
-                    when C_ST   => s_state <= C_RIN0;
-                    when C_RIN0 => s_state <= C_WDR;
-                    when C_WDR  => s_state <= C_RIN1;
-                    when C_RIN1 => s_state <= C_BSY;
-                    when others => null;
-                end case;
-            elsif p_cmd(2) = '1' then -- RD
-                case s_state is
-                    when C_ST   => s_state <= C_RDR0;
-                    when C_RDR0 => s_state <= C_WOUT;
-                    when C_WOUT => s_state <= C_RDR1;
-                    when C_RDR1 => s_state <= C_BSY;
-                    when others => null;
-                end case;
-            elsif p_cmd(3) = '1' then -- MOV
-                case s_state is
-                    when C_ST   => s_state <= C_RDR0;
-                    when C_RDR0 => s_state <= C_WDR;
-                    when C_WDR  => s_state <= C_RDR1;
-                    when C_RDR1 => s_state <= C_BSY;
-                    when others => null;
-                end case;
-            elsif p_cmd(4) = '1' then -- NOT
-                case s_state is
-                    when C_ST   => s_state <= C_CU0;
-                    when C_CU0  => s_state <= C_RCU0;
-                    when C_RCU0 => s_state <= C_WDR;
-                    when C_WDR  => s_state <= C_RCU1;
-                    when C_RCU1 => s_state <= C_WFL;
-                    when C_WFL  => s_state <= C_BSY;
-                    when others => null;
-                end case;
-            elsif p_cmd(5) = '1' then -- AND
-                case s_state is
-                    when C_ST   => s_state <= C_CU0;
-                    when C_CU0  => s_state <= C_RCU0;
-                    when C_RCU0 => s_state <= C_WDR;
-                    when C_WDR  => s_state <= C_RCU1;
-                    when C_RCU1 => s_state <= C_WFL;
-                    when C_WFL  => s_state <= C_BSY;
-                    when others => null;
-                end case;
-            elsif p_cmd(6) = '1' then -- OR
-                case s_state is
-                    when C_ST   => s_state <= C_CU0;
-                    when C_CU0  => s_state <= C_RCU0;
-                    when C_RCU0 => s_state <= C_WDR;
-                    when C_WDR  => s_state <= C_RCU1;
-                    when C_RCU1 => s_state <= C_WFL;
-                    when C_WFL  => s_state <= C_BSY;
-                    when others => null;
-                end case;
-            elsif p_cmd(7) = '1' then -- XOR
-                case s_state is
-                    when C_ST   => s_state <= C_CU0;
-                    when C_CU0  => s_state <= C_RCU0;
-                    when C_RCU0 => s_state <= C_WDR;
-                    when C_WDR  => s_state <= C_RCU1;
-                    when C_RCU1 => s_state <= C_WFL;
-                    when C_WFL  => s_state <= C_BSY;
-                    when others => null;
-                end case;
-            elsif p_cmd(8) = '1' then -- NAND
-                case s_state is
-                    when C_ST   => s_state <= C_CU0;
-                    when C_CU0  => s_state <= C_RCU0;
-                    when C_RCU0 => s_state <= C_WDR;
-                    when C_WDR  => s_state <= C_RCU1;
-                    when C_RCU1 => s_state <= C_WFL;
-                    when C_WFL  => s_state <= C_BSY;
-                    when others => null;
-                end case;
-            elsif p_cmd(9) = '1' then -- NOR
-                case s_state is
-                    when C_ST   => s_state <= C_CU0;
-                    when C_CU0  => s_state <= C_RCU0;
-                    when C_RCU0 => s_state <= C_WDR;
-                    when C_WDR  => s_state <= C_RCU1;
-                    when C_RCU1 => s_state <= C_WFL;
-                    when C_WFL  => s_state <= C_BSY;
-                    when others => null;
-                end case;
-            elsif p_cmd(10) = '1' then -- XNOR
-                case s_state is
-                    when C_ST   => s_state <= C_CU0;
-                    when C_CU0  => s_state <= C_RCU0;
-                    when C_RCU0 => s_state <= C_WDR;
-                    when C_WDR  => s_state <= C_RCU1;
-                    when C_RCU1 => s_state <= C_WFL;
-                    when C_WFL  => s_state <= C_BSY;
-                    when others => null;
-                end case;
-            elsif p_cmd(11) = '1' then -- SLL
-                case s_state is
-                    when C_ST   => s_state <= C_CU0;
-                    when C_CU0  => s_state <= C_CU1;
-                    when C_CU1  => s_state <= C_CU2;
-                    when C_CU2  => s_state <= C_RCU0; -- TODO
-                    when C_RCU0 => s_state <= C_WDR;
-                    when C_WDR  => s_state <= C_RCU1;
-                    when C_RCU1 => s_state <= C_WFL;
-                    when C_WFL  => s_state <= C_BSY;
-                    when others => null;
-                end case;
-            elsif p_cmd(12) = '1' then -- SRL
-                case s_state is
-                    when C_ST   => s_state <= C_CU0;
-                    when C_CU0  => s_state <= C_CU1;
-                    when C_CU1  => s_state <= C_CU2;
-                    when C_CU2  => s_state <= C_RCU0; -- TODO
-                    when C_RCU0 => s_state <= C_WDR;
-                    when C_WDR  => s_state <= C_RCU1;
-                    when C_RCU1 => s_state <= C_WFL;
-                    when C_WFL  => s_state <= C_BSY;
-                    when others => null;
-                end case;
-            elsif p_cmd(13) = '1' then -- SLA
-                case s_state is
-                    when C_ST   => s_state <= C_CU0;
-                    when C_CU0  => s_state <= C_CU1;
-                    when C_CU1  => s_state <= C_CU2;
-                    when C_CU2  => s_state <= C_RCU0; -- TODO
-                    when C_RCU0 => s_state <= C_WDR;
-                    when C_WDR  => s_state <= C_RCU1;
-                    when C_RCU1 => s_state <= C_WFL;
-                    when C_WFL  => s_state <= C_BSY;
-                    when others => null;
-                end case;
-            elsif p_cmd(14) = '1' then -- SRA
-                case s_state is
-                    when C_ST   => s_state <= C_CU0;
-                    when C_CU0  => s_state <= C_CU1;
-                    when C_CU1  => s_state <= C_CU2;
-                    when C_CU2  => s_state <= C_RCU0; -- TODO
-                    when C_RCU0 => s_state <= C_WDR;
-                    when C_WDR  => s_state <= C_RCU1;
-                    when C_RCU1 => s_state <= C_WFL;
-                    when C_WFL  => s_state <= C_BSY;
-                    when others => null;
-                end case;
-            elsif p_cmd(15) = '1' then -- ROL
-                case s_state is
-                    when C_ST   => s_state <= C_CU0;
-                    when C_CU0  => s_state <= C_CU1;
-                    when C_CU1  => s_state <= C_CU2;
-                    when C_CU2  => s_state <= C_RCU0; -- TODO
-                    when C_RCU0 => s_state <= C_WDR;
-                    when C_WDR  => s_state <= C_RCU1;
-                    when C_RCU1 => s_state <= C_WFL;
-                    when C_WFL  => s_state <= C_BSY;
-                    when others => null;
-                end case;
-            elsif p_cmd(16) = '1' then -- ROR
-                case s_state is
-                    when C_ST   => s_state <= C_CU0;
-                    when C_CU0  => s_state <= C_CU1;
-                    when C_CU1  => s_state <= C_CU2;
-                    when C_CU2  => s_state <= C_RCU0; -- TODO
-                    when C_RCU0 => s_state <= C_WDR;
-                    when C_WDR  => s_state <= C_RCU1;
-                    when C_RCU1 => s_state <= C_WFL;
-                    when C_WFL  => s_state <= C_BSY;
-                    when others => null;
-                end case;
-            elsif p_cmd(17) = '1' then -- IWR0
-                case s_state is
-                    when C_ST   => s_state <= C_RC0;
-                    when C_RC0  => s_state <= C_WDR;
-                    when C_WDR  => s_state <= C_RC1;
-                    when C_RC1  => s_state <= C_BSY;
-                    when others => null;
-                end case;
-            elsif p_cmd(18) = '1' then -- IWR1
-                case s_state is
-                    when C_ST   => s_state <= C_RC0;
-                    when C_RC0  => s_state <= C_WDR;
-                    when C_WDR  => s_state <= C_RC1;
-                    when C_RC1  => s_state <= C_BSY;
-                    when others => null;
-                end case;
-            elsif p_cmd(19) = '1' then -- IABS
-                case s_state is
-                    when C_ST   => s_state <= C_CU0;
-                    when C_CU0  => s_state <= C_RCU0;
-                    when C_RCU0 => s_state <= C_WDR;
-                    when C_WDR  => s_state <= C_RCU1;
-                    when C_RCU1 => s_state <= C_WFL;
-                    when C_WFL  => s_state <= C_BSY;
-                    when others => null;
-                end case;
-            elsif p_cmd(20) = '1' then -- ICHS
-                case s_state is
-                    when C_ST   => s_state <= C_CU0;
-                    when C_CU0  => s_state <= C_RCU0;
-                    when C_RCU0 => s_state <= C_WDR;
-                    when C_WDR  => s_state <= C_RCU1;
-                    when C_RCU1 => s_state <= C_WFL;
-                    when C_WFL  => s_state <= C_BSY;
-                    when others => null;
-                end case;
-            elsif p_cmd(21) = '1' then -- IADD
-                case s_state is
-                    when C_ST   => s_state <= C_CU0;
-                    when C_CU0  => s_state <= C_RCU0;
-                    when C_RCU0 => s_state <= C_WDR;
-                    when C_WDR  => s_state <= C_RCU1;
-                    when C_RCU1 => s_state <= C_WFL;
-                    when C_WFL  => s_state <= C_BSY;
-                    when others => null;
-                end case;
-            elsif p_cmd(22) = '1' then -- ISUB
-                case s_state is
-                    when C_ST   => s_state <= C_CU0;
-                    when C_CU0  => s_state <= C_RCU0;
-                    when C_RCU0 => s_state <= C_WDR;
-                    when C_WDR  => s_state <= C_RCU1;
-                    when C_RCU1 => s_state <= C_WFL;
-                    when C_WFL  => s_state <= C_BSY;
-                    when others => null;
-                end case;
-            elsif p_cmd(23) = '1' then -- IMUL
-                case s_state is
-                    when C_ST   => s_state <= C_CU0;
-                    when C_CU0  => s_state <= C_CU1;
-                    when C_CU1  => s_state <= C_RCU0; -- TODO
-                    when C_RCU0 => s_state <= C_WDR;
-                    when C_WDR  => s_state <= C_RCU1;
-                    when C_RCU1 => s_state <= C_WFL;
-                    when C_WFL  => s_state <= C_BSY;
-                    when others => null;
-                end case;
-            elsif p_cmd(24) = '1' then -- IDIV
-                case s_state is
-                    when C_ST   => s_state <= C_CU0;
-                    when C_CU0  => s_state <= C_CU1;
-                    when C_CU1  => s_state <= C_RCU0; -- TODO
-                    when C_RCU0 => s_state <= C_WDR;
-                    when C_WDR  => s_state <= C_RCU1;
-                    when C_RCU1 => s_state <= C_WFL;
-                    when C_WFL  => s_state <= C_BSY;
-                    when others => null;
-                end case;
-            elsif p_cmd(25) = '1' then -- ICMP
-                case s_state is
-                    when C_ST   => s_state <= C_CU0;
-                    when C_CU0  => s_state <= C_RCU0;
-                    when C_RCU0 => s_state <= C_WDR;
-                    when C_WDR  => s_state <= C_RCU1;
-                    when C_RCU1 => s_state <= C_WFL;
-                    when C_WFL  => s_state <= C_BSY;
-                    when others => null;
-                end case;
-            elsif p_cmd(26) = '1' then -- FWR0
-                case s_state is
-                    when C_ST   => s_state <= C_RC0;
-                    when C_RC0  => s_state <= C_WDR;
-                    when C_WDR  => s_state <= C_RC1;
-                    when C_RC1  => s_state <= C_BSY;
-                    when others => null;
-                end case;
-            elsif p_cmd(27) = '1' then -- FWR1
-                case s_state is
-                    when C_ST   => s_state <= C_RC0;
-                    when C_RC0  => s_state <= C_WDR;
-                    when C_WDR  => s_state <= C_RC1;
-                    when C_RC1  => s_state <= C_BSY;
-                    when others => null;
-                end case;
-            elsif p_cmd(28) = '1' then -- FWRP
-                case s_state is
-                    when C_ST   => s_state <= C_RC0;
-                    when C_RC0  => s_state <= C_WDR;
-                    when C_WDR  => s_state <= C_RC1;
-                    when C_RC1  => s_state <= C_BSY;
-                    when others => null;
-                end case;
-            elsif p_cmd(29) = '1' then -- FWRE
-                case s_state is
-                    when C_ST   => s_state <= C_RC0;
-                    when C_RC0  => s_state <= C_WDR;
-                    when C_WDR  => s_state <= C_RC1;
-                    when C_RC1  => s_state <= C_BSY;
-                    when others => null;
-                end case;
-            elsif p_cmd(30) = '1' then -- FABS
-                case s_state is
-                    when C_ST   => s_state <= C_CU0;
-                    when C_CU0  => s_state <= C_RCU0;
-                    when C_RCU0 => s_state <= C_WDR;
-                    when C_WDR  => s_state <= C_RCU1;
-                    when C_RCU1 => s_state <= C_WFL;
-                    when C_WFL  => s_state <= C_BSY;
-                    when others => null;
-                end case;
-            elsif p_cmd(31) = '1' then -- FCHS
-                case s_state is
-                    when C_ST   => s_state <= C_CU0;
-                    when C_CU0  => s_state <= C_RCU0;
-                    when C_RCU0 => s_state <= C_WDR;
-                    when C_WDR  => s_state <= C_RCU1;
-                    when C_RCU1 => s_state <= C_WFL;
-                    when C_WFL  => s_state <= C_BSY;
-                    when others => null;
-                end case;
-            elsif p_cmd(32) = '1' then -- FADD
-                case s_state is
-                    when C_ST   => s_state <= C_BSY;
-                    when others => null;
-                end case;
-            elsif p_cmd(33) = '1' then -- FSUB
-                case s_state is
-                    when C_ST   => s_state <= C_BSY;
-                    when others => null;
-                end case;
-            elsif p_cmd(34) = '1' then -- FMUL
-                case s_state is
-                    when C_ST   => s_state <= C_BSY;
-                    when others => null;
-                end case;
-            elsif p_cmd(35) = '1' then -- FDIV
-                case s_state is
-                    when C_ST   => s_state <= C_BSY;
-                    when others => null;
-                end case;
-            elsif p_cmd(36) = '1' then -- FCMP
-                case s_state is
-                    when C_ST   => s_state <= C_CU0;
-                    when C_CU0  => s_state <= C_RCU0;
-                    when C_RCU0 => s_state <= C_WDR;
-                    when C_WDR  => s_state <= C_RCU1;
-                    when C_RCU1 => s_state <= C_WFL;
-                    when C_WFL  => s_state <= C_BSY;
-                    when others => null;
-                end case;
-            end if;
+        elsif p_cl'event and p_cl = '0' then
+            case s_state is
+                when C_ST =>
+                    if p_cmd(0) <= '1' then
+                        s_state <= C_BSY;
+                    elsif p_cmd(1) <= '1' then -- WR
+                        s_state <= C_RIN0;
+                    elsif p_cmd(2) <= '1' then -- RD
+                        s_state <= C_RDR0;
+                    elsif p_cmd(3) <= '1' then -- MOV
+                        s_state <= C_RDR0;
+                    elsif p_cmd(17) <= '1' then -- IWR0
+                        s_state <= C_RC0;
+                    elsif p_cmd(18) <= '1' then -- IWR1
+                        s_state <= C_RC0;
+                    elsif p_cmd(26) <= '1' then -- FWR0
+                        s_state <= C_RC0;
+                    elsif p_cmd(27) <= '1' then -- FWR1
+                        s_state <= C_RC0;
+                    elsif p_cmd(28) <= '1' then -- FWRP
+                        s_state <= C_RC0;
+                    elsif p_cmd(29) <= '1' then -- FWRE
+                        s_state <= C_RC0;
+                    else
+                        s_state <= C_CU0;
+                    end if;
+                when C_RIN0 => s_state <= C_WDR;
+                when C_RIN1 => s_state <= C_BSY;
+                when C_RDR0 =>
+                    if p_cmd(2) = '1' then -- RD
+                        s_state <= C_WOUT;
+                    elsif p_cmd(3) = '1' then -- MOV
+                        s_state <= C_WDR;
+                    end if;
+                when C_RDR1 => s_state <= C_BSY;
+                when C_RCU0 => s_state <= C_WDR;
+                when C_RCU1 => s_state <= C_WFL;
+                when C_RC0 => s_state <= C_WDR;
+                when C_RC1 => s_state <= C_BSY;
+                when C_WDR =>
+                    if p_cmd(1) <= '1' then -- WR
+                        s_state <= C_RIN1;
+                    elsif p_cmd(3) <= '1' then -- MOV
+                        s_state <= C_RDR1;
+                    elsif p_cmd(17) <= '1' then -- IWR0
+                        s_state <= C_RC1;
+                    elsif p_cmd(18) <= '1' then -- IWR1
+                        s_state <= C_RC1;
+                    elsif p_cmd(26) <= '1' then -- FWR0
+                        s_state <= C_RC1;
+                    elsif p_cmd(27) <= '1' then -- FWR1
+                        s_state <= C_RC1;
+                    elsif p_cmd(28) <= '1' then -- FWRP
+                        s_state <= C_RC1;
+                    elsif p_cmd(29) <= '1' then -- FWRE
+                        s_state <= C_RC1;
+                    else
+                        s_state <= C_RCU1;
+                    end if;
+                when C_WOUT => s_state <= C_RDR1;
+                when C_WFL => s_state <= C_BSY;
+                when C_CU0 =>
+                    if p_cmd(11) = '1' then -- SLL
+                        s_state <= C_CU1;
+                    elsif p_cmd(12) = '1' then -- SRL
+                        s_state <= C_CU1;
+                    elsif p_cmd(13) = '1' then -- SLA
+                        s_state <= C_CU1;
+                    elsif p_cmd(14) = '1' then -- SRA
+                        s_state <= C_CU1;
+                    elsif p_cmd(15) = '1' then -- ROL
+                        s_state <= C_CU1;
+                    elsif p_cmd(16) = '1' then -- ROR
+                        s_state <= C_CU1;
+                    elsif p_cmd(23) = '1' then -- IMUL
+                        s_state <= C_CU1;
+                    elsif p_cmd(24) = '1' then -- IDIV
+                        s_state <= C_CU1;
+                    elsif p_cmd(32) = '1' then -- FADD
+                        s_state <= C_CU1;
+                    elsif p_cmd(33) = '1' then -- FSUB
+                        s_state <= C_CU1;
+                    elsif p_cmd(34) = '1' then -- FMUL
+                        s_state <= C_CU1;
+                    elsif p_cmd(35) = '1' then -- FDIV
+                        s_state <= C_CU1;
+                    else
+                        s_state <= C_RCU0;
+                    end if;
+                when C_CU1 => s_state <= C_CU2; -- TODO
+                when C_CU2 => s_state <= C_CU3; -- TODO
+                when C_CU3 => s_state <= C_CU4; -- TODO
+                when C_CU4 => s_state <= C_BSY; -- TODO
+                when C_BSY => null;
+            end case;
         end if;
     end process;
 
@@ -402,5 +153,5 @@ begin
         end case;
     end process;
 
-    p_ctrl <= s_ctrl when p_en = '1' else (others => '0');
+    p_ctrl <= s_ctrl when p_r = '0' else (others => '0');
 end architecture rtl;

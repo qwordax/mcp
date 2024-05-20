@@ -73,12 +73,13 @@ begin
         p_q  => s_rs
     );
 
-    l_en: entity work.c_tff
+    l_en: entity work.c_dff
     port map (
         p_r  => s_bus_ctrl(13), -- BSY
         p_s  => '0',
+        p_d  => s_en_p,
         p_cl => p_st,
-        p_en => s_en_p,
+        p_en => '1',
         p_q  => s_en
     );
 
@@ -90,7 +91,6 @@ begin
         p_cmd  => s_cmd,
         p_ex   => s_ex,
         p_cl   => p_cl,
-        p_en   => s_en,
         p_ctrl => s_bus_ctrl
     );
 
