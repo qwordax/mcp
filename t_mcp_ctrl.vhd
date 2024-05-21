@@ -21,14 +21,15 @@ begin
         p_ctrl => s_ctrl
     );
 
-    s_cl <= not s_cl after 20 ns;
+    s_cl <= not s_cl after 10 ns;
 
     process is
     begin
-        s_r   <= '0';
+        s_r   <= '1';
         s_cmd <= (others => '0');
-        wait for 40 ns;
+        wait for 60 ns;
 
+        s_r      <= '0';
         s_cmd(2) <= '1';
         wait;
     end process;

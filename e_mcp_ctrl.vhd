@@ -21,36 +21,36 @@ architecture rtl of e_mcp_ctrl is
         C_CU3,  C_CU4,  C_BSY
     );
 
-    signal s_state: state := C_ST;
+    signal s_state: state;
 
     signal s_ctrl: std_logic_vector(13 downto 0);
 begin
-    process (p_r, p_cl, p_cmd) is
+    process (p_r, p_cl) is
     begin
         if p_r = '1' then
             s_state <= C_ST;
         elsif p_cl'event and p_cl = '0' then
             case s_state is
                 when C_ST =>
-                    if p_cmd(0) <= '1' then
+                    if p_cmd(0) = '1' then
                         s_state <= C_BSY;
-                    elsif p_cmd(1) <= '1' then -- WR
+                    elsif p_cmd(1) = '1' then -- WR
                         s_state <= C_RIN0;
-                    elsif p_cmd(2) <= '1' then -- RD
+                    elsif p_cmd(2) = '1' then -- RD
                         s_state <= C_RDR0;
-                    elsif p_cmd(3) <= '1' then -- MOV
+                    elsif p_cmd(3) = '1' then -- MOV
                         s_state <= C_RDR0;
-                    elsif p_cmd(17) <= '1' then -- IWR0
+                    elsif p_cmd(17) = '1' then -- IWR0
                         s_state <= C_RC0;
-                    elsif p_cmd(18) <= '1' then -- IWR1
+                    elsif p_cmd(18) = '1' then -- IWR1
                         s_state <= C_RC0;
-                    elsif p_cmd(26) <= '1' then -- FWR0
+                    elsif p_cmd(26) = '1' then -- FWR0
                         s_state <= C_RC0;
-                    elsif p_cmd(27) <= '1' then -- FWR1
+                    elsif p_cmd(27) = '1' then -- FWR1
                         s_state <= C_RC0;
-                    elsif p_cmd(28) <= '1' then -- FWRP
+                    elsif p_cmd(28) = '1' then -- FWRP
                         s_state <= C_RC0;
-                    elsif p_cmd(29) <= '1' then -- FWRE
+                    elsif p_cmd(29) = '1' then -- FWRE
                         s_state <= C_RC0;
                     else
                         s_state <= C_CU0;
@@ -69,21 +69,21 @@ begin
                 when C_RC0 => s_state <= C_WDR;
                 when C_RC1 => s_state <= C_BSY;
                 when C_WDR =>
-                    if p_cmd(1) <= '1' then -- WR
+                    if p_cmd(1) = '1' then -- WR
                         s_state <= C_RIN1;
-                    elsif p_cmd(3) <= '1' then -- MOV
+                    elsif p_cmd(3) = '1' then -- MOV
                         s_state <= C_RDR1;
-                    elsif p_cmd(17) <= '1' then -- IWR0
+                    elsif p_cmd(17) = '1' then -- IWR0
                         s_state <= C_RC1;
-                    elsif p_cmd(18) <= '1' then -- IWR1
+                    elsif p_cmd(18) = '1' then -- IWR1
                         s_state <= C_RC1;
-                    elsif p_cmd(26) <= '1' then -- FWR0
+                    elsif p_cmd(26) = '1' then -- FWR0
                         s_state <= C_RC1;
-                    elsif p_cmd(27) <= '1' then -- FWR1
+                    elsif p_cmd(27) = '1' then -- FWR1
                         s_state <= C_RC1;
-                    elsif p_cmd(28) <= '1' then -- FWRP
+                    elsif p_cmd(28) = '1' then -- FWRP
                         s_state <= C_RC1;
-                    elsif p_cmd(29) <= '1' then -- FWRE
+                    elsif p_cmd(29) = '1' then -- FWRE
                         s_state <= C_RC1;
                     else
                         s_state <= C_RCU1;
@@ -122,7 +122,7 @@ begin
                 when C_CU2 => s_state <= C_CU3; -- TODO
                 when C_CU3 => s_state <= C_CU4; -- TODO
                 when C_CU4 => s_state <= C_BSY; -- TODO
-                when C_BSY => null;
+                when C_BSY => s_state <= C_BSY;
             end case;
         end if;
     end process;
