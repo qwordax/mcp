@@ -121,17 +121,17 @@ begin
                 when C_CU1 =>
                     if p_ex(0) = '1' then
                         s_state <= C_CU1;
-                    elsif p_cmd(11) = '1' then -- SLL
+                    elsif p_cmd(11) = '1' and p_ex(1) = '1' then -- SLL
                         s_state <= C_CU2;
-                    elsif p_cmd(12) = '1' then -- SRL
+                    elsif p_cmd(12) = '1' and p_ex(1) = '1' then -- SRL
                         s_state <= C_CU2;
-                    elsif p_cmd(13) = '1' then -- SLA
+                    elsif p_cmd(13) = '1' and p_ex(1) = '1' then -- SLA
                         s_state <= C_CU2;
-                    elsif p_cmd(14) = '1' then -- SRA
+                    elsif p_cmd(14) = '1' and p_ex(1) = '1' then -- SRA
                         s_state <= C_CU2;
-                    elsif p_cmd(15) = '1' then -- ROL
+                    elsif p_cmd(15) = '1' and p_ex(1) = '1' then -- ROL
                         s_state <= C_CU2;
-                    elsif p_cmd(16) = '1' then -- ROR
+                    elsif p_cmd(16) = '1' and p_ex(1) = '1' then -- ROR
                         s_state <= C_CU2;
                     end if;
                 when C_CU2 =>
