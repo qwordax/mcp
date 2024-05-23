@@ -169,7 +169,7 @@ begin
     p_led <= not s_mcp_fl;
 
     s_sd_d  <= s_mcp_q when s_sw(1) = '0' else s_mcp_d;
-    s_sd_ml <= s_in_ml when s_mode = "100" else s_sw(0);
+    s_sd_ml <= s_in_ml when s_mode(2) = '1' else s_sw(0);
 
     l_sd: entity work.e_top_sd
     port map (

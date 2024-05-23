@@ -9,13 +9,17 @@ port (
     p_ops: in  std_logic_vector(31 downto 0);
     p_cmd: in  std_logic_vector(36 downto 0);
     p_q:   out std_logic_vector(31 downto 0);
-    p_fl:  out std_logic_vector(9 downto 1)
+    p_fl:  out std_logic_vector(9 downto 1);
+    p_ex:  out std_logic_vector(3 downto 0)
 );
 end entity e_mcp_cu_logic;
 
 architecture rtl of e_mcp_cu_logic is
-    signal s_q: std_logic_vector(31 downto 0);
+    signal s_q:  std_logic_vector(31 downto 0);
+    signal s_en: std_logic;
 begin
+    s_en <= p_cmd(3) or p_cmd(4) or p_cmd(5) or p_cmd(6) or p_cmd(7) or p_cmd(8) or p_cmd(9);
+
     process (p_opd, p_ops, p_cmd) is
     begin
         if p_cmd(3) = '1' then -- NOT
@@ -37,9 +41,11 @@ begin
         end if;
     end process;
 
-    p_fl(1)          <= '1' when to_integer(unsigned(s_q(31 downto 0))) = 0 else '0';
-    p_fl(2)          <= s_q(31);
+    p_fl(1)          <= '1' when to_integer(unsigned(s_q(31 downto 0))) = 0 and s_en = '1' else '0';
+    p_fl(2)          <= s_q(31) when s_en = '1' else '0';
     p_fl(9 downto 3) <= (others => '0');
 
-    p_q <= s_q;
+    p_q <= s_q when s_en = '1' else (others => '0');
+
+    p_ex <= "0000";
 end architecture rtl;

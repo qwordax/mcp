@@ -31,10 +31,10 @@ begin
 
     process is
     begin
-        s_op <= "000000";
+        s_op <= "000000"; -- WR 6
         s_rd <= "110";
         s_rs <= "000";
-        s_d  <= "00001111000011110000111100001111";
+        s_d  <= "00010000000000000000000000000000";
         s_st <= '0';
         wait for 40 ns;
 
@@ -42,17 +42,30 @@ begin
         wait for 100 ns;
 
         s_st <= '0';
-        wait for 200 ns;
+        wait for 100 ns;
 
-        s_op <= "000001";
-        s_rd <= "000";
-        s_rs <= "110";
+        s_op <= "000000"; -- WR 2
+        s_rd <= "010";
+        s_rs <= "000";
+        s_d  <= "00000000000000000000000000000011";
+        s_st <= '0';
+        wait for 40 ns;
+
+        s_st <= '1';
+        wait for 100 ns;
+
+        s_st <= '0';
+        wait for 100 ns;
+
+        s_op <= "010000"; -- SLL
+        s_rd <= "110";
+        s_rs <= "010";
         s_d  <= (others => '0');
         s_st <= '0';
         wait for 40 ns;
 
         s_st <= '1';
-        wait for 1000 ns;
+        wait for 100 ns;
 
         s_st <= '0';
         wait;

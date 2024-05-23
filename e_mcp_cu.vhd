@@ -18,9 +18,11 @@ end entity e_mcp_cu;
 architecture rtl of e_mcp_cu is
     type d_type  is array (10 downto 0) of std_logic_vector(31 downto 0);
     type fl_type is array (10 downto 0) of std_logic_vector(9 downto 1);
+    type ex_type is array (10 downto 0) of std_logic_vector(3 downto 0);
 
     signal s_d:  d_type;
     signal s_fl: fl_type;
+    signal s_ex: ex_type;
 
     signal s_opd: std_logic_vector(31 downto 0);
     signal s_ops: std_logic_vector(31 downto 0);
@@ -57,29 +59,38 @@ begin
     l_f_abs: entity work.e_mcp_cu_f_abs
     port map (
         p_opd => s_opd,
+        p_cmd => p_cmd,
         p_q   => s_d(0),
-        p_fl  => s_fl(0)
+        p_fl  => s_fl(0),
+        p_ex  => s_ex(0)
     );
 
     l_f_chs: entity work.e_mcp_cu_f_chs
     port map (
         p_opd => s_opd,
+        p_cmd => p_cmd,
         p_q   => s_d(1),
-        p_fl  => s_fl(1)
+        p_fl  => s_fl(1),
+        p_ex  => s_ex(1)
     );
 
     l_f_comp: entity work.e_mcp_cu_f_comp
     port map (
         p_opd => s_opd,
         p_ops => s_ops,
-        p_fl  => s_fl(2)
+        p_cmd => p_cmd,
+        p_q   => s_d(2),
+        p_fl  => s_fl(2),
+        p_ex  => s_ex(2)
     );
 
     l_i_abs: entity work.e_mcp_cu_i_abs
     port map (
         p_opd => s_opd,
+        p_cmd => p_cmd,
         p_q   => s_d(3),
-        p_fl  => s_fl(3)
+        p_fl  => s_fl(3),
+        p_ex  => s_ex(3)
     );
 
     l_i_add: entity work.e_mcp_cu_i_add
@@ -88,21 +99,27 @@ begin
         p_ops => s_ops,
         p_cmd => p_cmd,
         p_q   => s_d(4),
-        p_fl  => s_fl(4)
+        p_fl  => s_fl(4),
+        p_ex  => s_ex(4)
     );
 
     l_i_chs: entity work.e_mcp_cu_i_chs
     port map (
         p_opd => s_opd,
+        p_cmd => p_cmd,
         p_q   => s_d(5),
-        p_fl  => s_fl(5)
+        p_fl  => s_fl(5),
+        p_ex  => s_ex(5)
     );
 
     l_i_comp: entity work.e_mcp_cu_i_comp
     port map (
         p_opd => s_opd,
         p_ops => s_ops,
-        p_fl  => s_fl(6)
+        p_cmd => p_cmd,
+        p_q   => s_d(6),
+        p_fl  => s_fl(6),
+        p_ex  => s_ex(6)
     );
 
     l_i_div: entity work.e_mcp_cu_i_div
@@ -113,7 +130,8 @@ begin
         p_cl   => p_cl,
         p_ctrl => p_ctrl,
         p_q    => s_d(7),
-        p_fl   => s_fl(7)
+        p_fl   => s_fl(7),
+        p_ex   => s_ex(7)
     );
 
     l_i_mul: entity work.e_mcp_cu_i_mul
@@ -124,7 +142,8 @@ begin
         p_cl   => p_cl,
         p_ctrl => p_ctrl,
         p_q    => s_d(8),
-        p_fl   => s_fl(8)
+        p_fl   => s_fl(8),
+        p_ex   => s_ex(8)
     );
 
     l_logic: entity work.e_mcp_cu_logic
@@ -133,19 +152,23 @@ begin
         p_ops => s_ops,
         p_cmd => p_cmd,
         p_q   => s_d(9),
-        p_fl  => s_fl(9)
+        p_fl  => s_fl(9),
+        p_ex  => s_ex(9)
     );
 
     l_shift: entity work.e_mcp_cu_shift
     port map (
-        p_opd => s_opd,
-        p_ops => s_ops,
-        p_cmd => p_cmd,
-        p_q   => s_d(10),
-        p_fl  => s_fl(10)
+        p_opd  => s_opd,
+        p_ops  => s_ops,
+        p_cmd  => p_cmd,
+        p_cl   => p_cl,
+        p_ctrl => p_ctrl,
+        p_q    => s_d(10),
+        p_fl   => s_fl(10),
+        p_ex   => s_ex(10)
     );
 
-    process (p_cmd) is
+    process (p_cmd, s_d, s_fl, s_ex) is
         variable v_f_abs:  std_logic;
         variable v_f_chs:  std_logic;
         variable v_f_comp: std_logic;
@@ -157,6 +180,8 @@ begin
         variable v_i_mul:  std_logic;
         variable v_logic:  std_logic;
         variable v_shift:  std_logic;
+
+        variable v_tmp: integer;
     begin
         v_f_abs  := p_cmd(30);
         v_f_chs  := p_cmd(31);
@@ -171,42 +196,34 @@ begin
         v_shift  := p_cmd(11) or p_cmd(12) or p_cmd(13) or p_cmd(14) or p_cmd(15) or p_cmd(16);
 
         if v_f_abs = '1' then
-            s_q  <= s_d(0);
-            p_fl <= s_fl(0);
+            v_tmp := 0;
         elsif v_f_chs = '1' then
-            s_q  <= s_d(1);
-            p_fl <= s_fl(1);
+            v_tmp := 1;
         elsif v_f_comp = '1' then
-            s_q  <= (others => '0');
-            p_fl <= s_fl(2);
+            v_tmp := 2;
         elsif v_i_abs = '1' then
-            s_q  <= s_d(3);
-            p_fl <= s_fl(3);
+            v_tmp := 3;
         elsif v_i_add = '1' then
-            s_q  <= s_d(4);
-            p_fl <= s_fl(4);
+            v_tmp := 4;
         elsif v_i_chs = '1' then
-            s_q  <= s_d(5);
-            p_fl <= s_fl(5);
+            v_tmp := 5;
         elsif v_i_comp = '1' then
-            s_q  <= (others => '0');
-            p_fl <= s_fl(6);
+            v_tmp := 6;
         elsif v_i_div = '1' then
-            s_q  <= s_d(7);
-            p_fl <= s_fl(7);
+            v_tmp := 7;
         elsif v_i_mul = '1' then
-            s_q  <= s_d(8);
-            p_fl <= s_fl(8);
+            v_tmp := 8;
         elsif v_logic = '1' then
-            s_q  <= s_d(9);
-            p_fl <= s_fl(9);
+            v_tmp := 9;
         elsif v_shift = '1' then
-            s_q  <= s_d(10);
-            p_fl <= s_fl(10);
+            v_tmp := 10;
         else
-            s_q  <= (others => '0');
-            p_fl <= (others => '0');
+            v_tmp := 0;
         end if;
+
+        s_q  <= s_d(v_tmp);
+        p_fl <= s_fl(v_tmp);
+        p_ex <= s_ex(v_tmp);
     end process;
 
     l_en: entity work.c_tff

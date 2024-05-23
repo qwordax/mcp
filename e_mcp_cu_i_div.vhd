@@ -34,12 +34,14 @@ begin
         p_q  => s_q
     );
 
-    p_q(31 downto 16) <= (others => s_q(15));
-    p_q(15 downto 0)  <= s_q;
+    p_q(31 downto 16) <= (others => s_q(15)) when p_cmd(24) = '1' else (others => '0');
+    p_q(15 downto 0)  <= s_q when p_cmd(24) = '1' else (others => '0');
 
     p_fl(1)          <= '0';
-    p_fl(2)          <= s_q(15);
+    p_fl(2)          <= s_q(15) when p_cmd(24) = '1' else '0';
     p_fl(7 downto 3) <= (others => '0');
-    p_fl(8)          <= '1' when to_integer(unsigned(p_ops)) = 0 else '0';
+    p_fl(8)          <= '1' when to_integer(unsigned(p_ops)) = 0 and p_cmd(24) = '1' else '0';
     p_fl(9)          <= '0';
+
+    p_ex <= "0000";
 end architecture rtl;

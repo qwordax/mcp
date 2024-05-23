@@ -118,10 +118,46 @@ begin
                     else
                         s_state <= C_RCU0;
                     end if;
-                when C_CU1 => s_state <= C_CU2; -- TODO
-                when C_CU2 => s_state <= C_CU3; -- TODO
-                when C_CU3 => s_state <= C_CU4; -- TODO
-                when C_CU4 => s_state <= C_BSY; -- TODO
+                when C_CU1 =>
+                    if p_ex(0) = '1' then
+                        s_state <= C_CU1;
+                    elsif p_cmd(11) = '1' then -- SLL
+                        s_state <= C_CU2;
+                    elsif p_cmd(12) = '1' then -- SRL
+                        s_state <= C_CU2;
+                    elsif p_cmd(13) = '1' then -- SLA
+                        s_state <= C_CU2;
+                    elsif p_cmd(14) = '1' then -- SRA
+                        s_state <= C_CU2;
+                    elsif p_cmd(15) = '1' then -- ROL
+                        s_state <= C_CU2;
+                    elsif p_cmd(16) = '1' then -- ROR
+                        s_state <= C_CU2;
+                    end if;
+                when C_CU2 =>
+                    if p_ex(1) = '1' then
+                        s_state <= C_CU2;
+                    elsif p_cmd(11) = '1' then -- SLL
+                        s_state <= C_RCU0;
+                    elsif p_cmd(12) = '1' then -- SRL
+                        s_state <= C_RCU0;
+                    elsif p_cmd(13) = '1' then -- SLA
+                        s_state <= C_RCU0;
+                    elsif p_cmd(14) = '1' then -- SRA
+                        s_state <= C_RCU0;
+                    elsif p_cmd(15) = '1' then -- ROL
+                        s_state <= C_RCU0;
+                    elsif p_cmd(16) = '1' then -- ROR
+                        s_state <= C_RCU0;
+                    end if;
+                when C_CU3 =>
+                    if p_ex(2) = '1' then
+                        s_state <= C_CU3;
+                    end if;
+                when C_CU4 =>
+                    if p_ex(3) = '1' then
+                        s_state <= C_CU4;
+                    end if;
                 when C_BSY => s_state <= C_BSY;
             end case;
         end if;

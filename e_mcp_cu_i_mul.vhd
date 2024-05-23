@@ -34,7 +34,7 @@ begin
         p_q  => s_q
     );
 
-    p_q <= s_q(31 downto 0);
+    p_q <= s_q(31 downto 0) when p_cmd(23) = '1' else (others => '0');
 
     process (s_q) is
         variable v_o: std_logic := s_q(63);
@@ -47,14 +47,20 @@ begin
 
         p_fl <= (others => '0');
 
-        if to_integer(unsigned(s_q(31 downto 0))) = 0 then
+        if to_integer(unsigned(s_q(31 downto 0))) = 0 and p_cmd(23) = '1' then
             p_fl(1) <= '1';
         else
             p_fl(1) <= '0';
         end if;
 
-        p_fl(2) <= s_q(31);
-        p_fl(3) <= v_o and s_q(31);
-        p_fl(4) <= v_u and not s_q(31);
+        if p_cmd(23) = '1' then
+            p_fl(2) <= s_q(31);
+            p_fl(3) <= v_o and s_q(31);
+            p_fl(4) <= v_u and not s_q(31);
+        else
+            p_fl(4 downto 2) <= (others => '0');
+        end if;
     end process;
+
+    p_ex <= "0000";
 end architecture rtl;
