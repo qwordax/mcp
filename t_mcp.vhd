@@ -52,7 +52,13 @@ begin
         wait for 40 ns;
 
         s_st <= '1';
-        wait for 100 ns;
+        wait for 20 ns;
+
+        s_st <= '0';
+        wait for 20 ns;
+
+        s_st <= '1';
+        wait for 60 ns;
 
         s_st <= '0';
         wait for 100 ns;

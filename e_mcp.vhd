@@ -77,7 +77,7 @@ begin
     port map (
         p_r  => s_bus_ctrl(13), -- BSY
         p_s  => '0',
-        p_d  => s_en_p,
+        p_d  => '1',
         p_cl => p_st,
         p_en => '1',
         p_q  => s_en
