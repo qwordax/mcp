@@ -72,7 +72,7 @@ begin
             v_d_m := not v_d_m + '1';
         end if;
 
-        if p_cmd(22) = '1' xor v_s_s = '1' then
+        if p_cmd(33) = '1' xor v_s_s = '1' then
             v_s_m := not v_s_m + '1';
         end if;
 
@@ -128,7 +128,7 @@ begin
     begin
         v_res_m := s_res_m;
 
-        if v_res_m(25) = '1' then
+        if s_res_m(25) = '1' then
             v_res_m := not v_res_m + '1';
         end if;
 
@@ -139,7 +139,7 @@ begin
         elsif s_zero_d = '1' and s_zero_s = '1' then
             s_q <= "00000000000000000000000000000000";
         else
-            s_q(31)           <= s_res_m(25);
+            s_q(31)           <= v_res_m(25);
             s_q(30 downto 23) <= s_d_e;
             s_q(22 downto 0)  <= v_res_m(22 downto 0);
         end if;
