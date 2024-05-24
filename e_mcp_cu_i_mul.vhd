@@ -36,7 +36,7 @@ begin
 
     p_q <= s_q(31 downto 0) when p_cmd(23) = '1' else (others => '0');
 
-    process (s_q) is
+    process (s_q, p_cmd) is
         variable v_o: std_logic := s_q(63);
         variable v_u: std_logic := s_q(63);
     begin

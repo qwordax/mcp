@@ -102,7 +102,6 @@ begin
             v_ctr := to_integer(unsigned(v_d_e)) - to_integer(unsigned(v_s_e));
         elsif p_cl'event and p_cl = '1' and p_ctrl(10) = '1' then -- CU2
             s_s_m <= s_s_m(25) & s_s_m(25 downto 1);
-
             v_ctr := v_ctr - 1;
         elsif p_cl'event and p_cl = '1' and p_ctrl(11) = '1' then -- CU3
             s_res_m <= s_d_m + s_s_m;
@@ -117,7 +116,7 @@ begin
             p_ex(1) <= '0';
         end if;
 
-        if s_res_m(25 downto 23) /= "001" and s_res_m(25 downto 23) /= "110" and s_en = '1' then
+        if (s_res_m(25 downto 23) /= "001" and s_res_m(25 downto 23) /= "110") and s_en = '1' then
             p_ex(3) <= '1';
         else
             p_ex(3) <= '0';

@@ -116,7 +116,13 @@ begin
                             s_state <= C_CU1;
                         end if;
                     elsif p_cmd(34) = '1' then -- FMUL
-                        s_state <= C_CU1;
+                        if p_ex(0) = '1' then
+                            s_state <= C_RCU0;
+                        elsif p_ex(2) = '1' then
+                            s_state <= C_WFL;
+                        else
+                            s_state <= C_CU1;
+                        end if;
                     elsif p_cmd(35) = '1' then -- FDIV
                         s_state <= C_CU1;
                     else
@@ -165,6 +171,12 @@ begin
                         else
                             s_state <= C_CU3;
                         end if;
+                    elsif p_cmd(34) = '1' then -- FMUL
+                        if p_ex(1) = '1' then
+                            s_state <= C_CU2;
+                        else
+                            s_state <= C_CU3;
+                        end if;
                     end if;
                 when C_CU2 =>
                     if p_ex(1) = '1' then
@@ -181,11 +193,19 @@ begin
                         s_state <= C_RCU0;
                     elsif p_cmd(16) = '1' then -- ROR
                         s_state <= C_RCU0;
-                    elsif p_cmd(32) = '1' or p_cmd(33) = '1' then
+                    elsif p_cmd(32) = '1' or p_cmd(33) = '1' then -- FADD, FSUB
+                        s_state <= C_CU3;
+                    elsif p_cmd(34) = '1' then -- FMUL
                         s_state <= C_CU3;
                     end if;
                 when C_CU3 =>
                     if p_cmd(32) = '1' or p_cmd(33) = '1' then -- FADD, FSUB
+                        if p_ex(3) = '1' then
+                            s_state <= C_CU4;
+                        else
+                            s_state <= C_RCU0;
+                        end if;
+                    elsif p_cmd(34) = '1' then -- FMUL
                         if p_ex(3) = '1' then
                             s_state <= C_CU4;
                         else
@@ -197,7 +217,9 @@ begin
                 when C_CU4 =>
                     if p_ex(3) = '1' then
                         s_state <= C_CU4;
-                    elsif p_cmd(32) = '1' or p_cmd(33) = '1' then
+                    elsif p_cmd(32) = '1' or p_cmd(33) = '1' then -- FADD, FSUB
+                        s_state <= C_RCU0;
+                    elsif p_cmd(34) = '1' then -- FMUL
                         s_state <= C_RCU0;
                     else
                         s_state <= C_BSY;
