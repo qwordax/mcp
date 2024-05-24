@@ -124,7 +124,13 @@ begin
                             s_state <= C_CU1;
                         end if;
                     elsif p_cmd(35) = '1' then -- FDIV
-                        s_state <= C_CU1;
+                        if p_ex(0) = '1' then
+                            s_state <= C_RCU0;
+                        elsif p_ex(2) = '1' then
+                            s_state <= C_WFL;
+                        else
+                            s_state <= C_CU1;
+                        end if;
                     else
                         s_state <= C_RCU0;
                     end if;
@@ -177,6 +183,14 @@ begin
                         else
                             s_state <= C_CU3;
                         end if;
+                    elsif p_cmd(35) = '1' then -- FDIV
+                        if p_ex(1) = '1' then
+                            s_state <= C_CU2;
+                        else
+                            s_state <= C_CU3;
+                        end if;
+                    else
+                        s_state <= C_BSY;
                     end if;
                 when C_CU2 =>
                     if p_ex(1) = '1' then
@@ -211,6 +225,12 @@ begin
                         else
                             s_state <= C_RCU0;
                         end if;
+                    elsif p_cmd(35) = '1' then -- FDIV
+                        if p_ex(3) = '1' then
+                            s_state <= C_CU4;
+                        else
+                            s_state <= C_RCU0;
+                        end if;
                     else
                         s_state <= C_BSY;
                     end if;
@@ -220,6 +240,8 @@ begin
                     elsif p_cmd(32) = '1' or p_cmd(33) = '1' then -- FADD, FSUB
                         s_state <= C_RCU0;
                     elsif p_cmd(34) = '1' then -- FMUL
+                        s_state <= C_RCU0;
+                    elsif p_cmd(35) = '1' then -- FDIV
                         s_state <= C_RCU0;
                     else
                         s_state <= C_BSY;
