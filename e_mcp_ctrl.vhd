@@ -107,10 +107,14 @@ begin
                         s_state <= C_CU1;
                     elsif p_cmd(24) = '1' then -- IDIV
                         s_state <= C_CU1;
-                    elsif p_cmd(32) = '1' then -- FADD
-                        s_state <= C_CU1;
-                    elsif p_cmd(33) = '1' then -- FSUB
-                        s_state <= C_CU1;
+                    elsif p_cmd(32) = '1' or p_cmd(33) = '1' then -- FADD, FSUB
+                        if p_ex(0) = '1' then
+                            s_state <= C_RCU0;
+                        elsif p_ex(2) = '1' then
+                            s_state <= C_WFL;
+                        else
+                            s_state <= C_CU1;
+                        end if;
                     elsif p_cmd(34) = '1' then -- FMUL
                         s_state <= C_CU1;
                     elsif p_cmd(35) = '1' then -- FDIV
@@ -119,20 +123,48 @@ begin
                         s_state <= C_RCU0;
                     end if;
                 when C_CU1 =>
-                    if p_ex(0) = '1' then
-                        s_state <= C_CU1;
-                    elsif p_cmd(11) = '1' and p_ex(1) = '1' then -- SLL
-                        s_state <= C_CU2;
-                    elsif p_cmd(12) = '1' and p_ex(1) = '1' then -- SRL
-                        s_state <= C_CU2;
-                    elsif p_cmd(13) = '1' and p_ex(1) = '1' then -- SLA
-                        s_state <= C_CU2;
-                    elsif p_cmd(14) = '1' and p_ex(1) = '1' then -- SRA
-                        s_state <= C_CU2;
-                    elsif p_cmd(15) = '1' and p_ex(1) = '1' then -- ROL
-                        s_state <= C_CU2;
-                    elsif p_cmd(16) = '1' and p_ex(1) = '1' then -- ROR
-                        s_state <= C_CU2;
+                    if p_cmd(11) = '1' then -- SLL
+                        if p_ex(1) = '1' then
+                            s_state <= C_CU2;
+                        else
+                            s_state <= C_RCU0;
+                        end if;
+                    elsif p_cmd(12) = '1' then -- SRL
+                        if p_ex(1) = '1' then
+                            s_state <= C_CU2;
+                        else
+                            s_state <= C_RCU0;
+                        end if;
+                    elsif p_cmd(13) = '1' then -- SLA
+                        if p_ex(1) = '1' then
+                            s_state <= C_CU2;
+                        else
+                            s_state <= C_RCU0;
+                        end if;
+                    elsif p_cmd(14) = '1' then -- SRA
+                        if p_ex(1) = '1' then
+                            s_state <= C_CU2;
+                        else
+                            s_state <= C_RCU0;
+                        end if;
+                    elsif p_cmd(15) = '1' then -- ROL
+                        if p_ex(1) = '1' then
+                            s_state <= C_CU2;
+                        else
+                            s_state <= C_RCU0;
+                        end if;
+                    elsif p_cmd(16) = '1' then -- ROR
+                        if p_ex(1) = '1' then
+                            s_state <= C_CU2;
+                        else
+                            s_state <= C_RCU0;
+                        end if;
+                    elsif p_cmd(32) = '1' or p_cmd(33) = '1' then -- FADD, FSUB
+                        if p_ex(1) = '1' then
+                            s_state <= C_CU2;
+                        else
+                            s_state <= C_CU3;
+                        end if;
                     end if;
                 when C_CU2 =>
                     if p_ex(1) = '1' then
@@ -149,14 +181,26 @@ begin
                         s_state <= C_RCU0;
                     elsif p_cmd(16) = '1' then -- ROR
                         s_state <= C_RCU0;
+                    elsif p_cmd(32) = '1' or p_cmd(33) = '1' then
+                        s_state <= C_CU3;
                     end if;
                 when C_CU3 =>
-                    if p_ex(2) = '1' then
-                        s_state <= C_CU3;
+                    if p_cmd(32) = '1' or p_cmd(33) = '1' then -- FADD, FSUB
+                        if p_ex(3) = '1' then
+                            s_state <= C_CU4;
+                        else
+                            s_state <= C_RCU0;
+                        end if;
+                    else
+                        s_state <= C_BSY;
                     end if;
                 when C_CU4 =>
                     if p_ex(3) = '1' then
                         s_state <= C_CU4;
+                    elsif p_cmd(32) = '1' or p_cmd(33) = '1' then
+                        s_state <= C_RCU0;
+                    else
+                        s_state <= C_BSY;
                     end if;
                 when C_BSY => s_state <= C_BSY;
             end case;
