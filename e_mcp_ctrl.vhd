@@ -211,6 +211,10 @@ begin
                         s_state <= C_CU3;
                     elsif p_cmd(34) = '1' then -- FMUL
                         s_state <= C_CU3;
+                    elsif p_cmd(35) = '1' then -- FDIV
+                        s_state <= C_CU3;
+                    else
+                        s_state <= C_BSY;
                     end if;
                 when C_CU3 =>
                     if p_cmd(32) = '1' or p_cmd(33) = '1' then -- FADD, FSUB

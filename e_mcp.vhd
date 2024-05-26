@@ -42,8 +42,8 @@ begin
         p_r  => '0',
         p_s  => '0',
         p_d  => p_op,
-        p_cl => p_cl,
-        p_en => s_en,
+        p_cl => p_st,
+        p_en => '1',
         p_q  => s_op
     );
 
@@ -55,8 +55,8 @@ begin
         p_r  => '0',
         p_s  => '0',
         p_d  => p_rd,
-        p_cl => p_cl,
-        p_en => s_en,
+        p_cl => p_st,
+        p_en => '1',
         p_q  => s_rd
     );
 
@@ -68,8 +68,8 @@ begin
         p_r  => '0',
         p_s  => '0',
         p_d  => p_rs,
-        p_cl => p_cl,
-        p_en => s_en,
+        p_cl => p_st,
+        p_en => '1',
         p_q  => s_rs
     );
 

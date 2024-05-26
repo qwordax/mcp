@@ -81,7 +81,7 @@ begin
             s_res_e <= s_res_e - '1';
         end if;
 
-        if v_ctr /= 0 and p_cmd(34) = '1' then
+        if v_ctr /= 0 and p_cmd(35) = '1' then
             p_ex(1) <= '1';
         else
             p_ex(1) <= '0';
@@ -94,7 +94,7 @@ begin
         end if;
     end process;
 
-    s_en <= p_cmd(35) and p_ctrl(9); -- CU1
+    s_en <= p_cmd(35) and p_ctrl(10); -- CU2
 
     l_div: entity work.c_div
     generic map (
@@ -119,7 +119,7 @@ begin
         end if;
     end process;
 
-    p_q  <= (others => '0');
+    p_q  <= s_q when p_cmd(35) = '1' else (others => '0');
 
     p_fl(1)          <= s_zero_d and not s_zero_s when p_cmd(35) = '1' else '0';
     p_fl(2)          <= s_q(31) when p_cmd(35) = '1' else '0';
