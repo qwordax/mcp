@@ -171,6 +171,18 @@ begin
                         else
                             s_state <= C_RCU0;
                         end if;
+                    elsif p_cmd(23) = '1' then -- IMUL
+                        if p_ex(0) = '1' then
+                            s_state <= C_CU1;
+                        else
+                            s_state <= C_RCU0;
+                        end if;
+                    elsif p_cmd(24) = '1' then -- IDIV
+                        if p_ex(0) = '1' then
+                            s_state <= C_CU1;
+                        else
+                            s_state <= C_RCU0;
+                        end if;
                     elsif p_cmd(32) = '1' or p_cmd(33) = '1' then -- FADD, FSUB
                         if p_ex(1) = '1' then
                             s_state <= C_CU2;
