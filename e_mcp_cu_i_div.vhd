@@ -20,6 +20,22 @@ architecture rtl of e_mcp_cu_i_div is
     signal s_en: std_logic;
     signal s_q:  std_logic_vector(15 downto 0);
 begin
+    process (p_cmd, p_cl, p_ctrl) is
+        variable v_ctr: integer;
+    begin
+        if p_cl'event and p_cl = '1' and p_ctrl(8) = '1' then -- CU0
+            v_ctr := 65;
+        elsif p_cl'event and p_cl = '1' and p_ctrl(9) = '1' then -- CU1
+            v_ctr := v_ctr - 1;
+        end if;
+
+        if v_ctr /= 0 and p_cmd(24) = '1' then
+            p_ex(0) <= '1';
+        else
+            p_ex(0) <= '0';
+        end if;
+    end process;
+
     s_en <= p_cmd(24) and p_ctrl(9); -- CU1
 
     l_div: entity work.c_div
@@ -43,5 +59,5 @@ begin
     p_fl(8)          <= '1' when to_integer(unsigned(p_ops)) = 0 and p_cmd(24) = '1' else '0';
     p_fl(9)          <= '0';
 
-    p_ex <= "0000";
+    p_ex(3 downto 1) <= "000";
 end architecture rtl;
