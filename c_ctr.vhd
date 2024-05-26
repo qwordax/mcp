@@ -17,7 +17,7 @@ end entity c_ctr;
 
 architecture rtl of c_ctr is
 begin
-    process (p_r, p_cl) is
+    process (p_r, p_cl, p_en) is
         variable v_tmp: std_logic_vector(g_width - 1 downto 0) := (others => '0');
     begin
         if p_r = '1' then

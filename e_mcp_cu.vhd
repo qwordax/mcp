@@ -96,7 +96,7 @@ begin
         p_ex  => s_ex(3)
     );
 
-    l_f_mul: entity work.e_mcp_cu_f_mul
+    l_f_div: entity work.e_mcp_cu_f_div
     port map (
         p_opd  => s_opd,
         p_ops  => s_ops,
@@ -108,7 +108,7 @@ begin
         p_ex   => s_ex(4)
     );
 
-    l_f_div: entity work.e_mcp_cu_f_div
+    l_f_mul: entity work.e_mcp_cu_f_mul
     port map (
         p_opd  => s_opd,
         p_ops  => s_ops,

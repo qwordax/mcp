@@ -14,7 +14,7 @@ end entity c_tff;
 
 architecture rtl of c_tff is
 begin
-    process (p_r, p_s, p_cl) is
+    process (p_r, p_s, p_cl, p_en) is
         variable v_tmp: std_logic := '0';
     begin
         if p_r = '1' then

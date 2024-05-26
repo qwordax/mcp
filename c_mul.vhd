@@ -39,7 +39,7 @@ architecture rtl of c_mul is
 
     signal s_di: std_logic;
 begin
-    process (p_en, p_cl, p_b, s_b, s_sm_q) is
+    process (p_en, p_cl, p_b, s_b, s_sm_q, s_co_q, s_p) is
         variable v_ctr: ctr_type := 0;
     begin
         if p_en = '0' then
@@ -124,27 +124,7 @@ begin
         p_q  => s_p
     );
 
---    process (p_en, p_cl, s_ps) is
---        variable v_ctr: ci_type := 0;
---    begin
---        if p_en = '0' then
---            v_ctr := 0;
---        elsif p_cl'event and p_cl = '1' and s_ps = '0' then
---            if v_ctr < ci_type'high then
---                v_ctr := v_ctr + 1;
---            else
---                v_ctr := 0;
---            end if;
---        end if;
---
---        if v_ctr = ci_type'high - 1 and s_b(0) = '1' then
---            s_sm_ci <= '1';
---        else
---            s_sm_ci <= '0';
---        end if;
---    end process;
-
-    process (s_b, s_sm_ci) is
+    process (s_b, s_sm_ci, s_a) is
     begin
         if s_b(0) = '0' then
             s_sm_a <= (others => '0');

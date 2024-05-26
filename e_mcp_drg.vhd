@@ -53,12 +53,12 @@ begin
         );
     end generate l_drg;
 
-    l_rs: process (p_rs) is
+    l_rs: process (p_rs, s_mem) is
     begin
         s_d <= s_mem(to_integer(unsigned(p_rs)));
     end process l_rs;
 
-    l_op: process (p_rs, p_rd) is
+    l_op: process (p_rs, p_rd, s_mem) is
     begin
         p_opd <= s_mem(to_integer(unsigned(p_rd)));
         p_ops <= s_mem(to_integer(unsigned(p_rs)));

@@ -42,6 +42,8 @@ begin
             v_next := v_tmp(30 downto 0) & v_tmp(31);
         elsif p_cmd(16) = '1' then -- ROR
             v_next := v_tmp(0) & v_tmp(31 downto 1);
+        else
+            v_next := v_tmp;
         end if;
 
         if p_cl'event and p_cl = '1' and p_ctrl(10) = '1' then -- CU2

@@ -43,7 +43,7 @@ begin
     s_inf_d <= '1' when p_opd(30 downto 23) = "11111111" else '0';
     s_inf_s <= '1' when p_ops(30 downto 23) = "11111111" else '0';
 
-    process (p_cl, p_ctrl, p_opd, p_ops) is
+    process (p_cmd, p_cl, p_ctrl, p_opd, p_ops, s_res_m) is
         variable v_d_s: std_logic;
         variable v_d_e: std_logic_vector(7 downto 0);
         variable v_d_m: std_logic_vector(24 downto 0);
@@ -86,7 +86,7 @@ begin
             p_ex(1) <= '0';
         end if;
 
-        if s_res_m(49 downto 48) /= "01" and p_cmd(34) = '1' then
+        if s_res_m(49 downto 46) /= "0001" and p_cmd(34) = '1' then
             p_ex(3) <= '1';
         else
             p_ex(3) <= '0';
@@ -114,7 +114,7 @@ begin
         else
             s_q(31)           <= s_res_s;
             s_q(30 downto 23) <= s_res_e;
-            s_q(22 downto 0)  <= s_res_m(48 downto 26);
+            s_q(22 downto 0)  <= s_res_m(45 downto 23);
         end if;
     end process;
 

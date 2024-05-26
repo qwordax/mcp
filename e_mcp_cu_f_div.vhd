@@ -43,7 +43,7 @@ begin
     s_inf_d <= '1' when p_opd(30 downto 23) = "11111111" else '0';
     s_inf_s <= '1' when p_ops(30 downto 23) = "11111111" else '0';
 
-    process (p_cl, p_ctrl, p_opd, p_ops) is
+    process (p_cl, p_ctrl, p_opd, p_ops, p_cmd, s_res_m) is
         variable v_d_s: std_logic;
         variable v_d_e: std_logic_vector(7 downto 0);
         variable v_d_m: std_logic_vector(24 downto 0);

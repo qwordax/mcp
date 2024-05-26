@@ -66,7 +66,7 @@ begin
         p_q  => s_b
     );
 
-    process (p_en, p_cl) is
+    process (p_en, p_cl, p_a, s_r, s_b, s_sm_ci, s_q, s_sm_q) is
         variable v_ctr: ctr_type := 0;
     begin
         if p_en = '0' then

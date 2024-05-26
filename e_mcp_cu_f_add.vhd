@@ -26,12 +26,9 @@ architecture rtl of e_mcp_cu_f_add is
     signal s_inf_d: std_logic;
     signal s_inf_s: std_logic;
 
-    signal s_d_s: std_logic;
     signal s_d_e: std_logic_vector(7 downto 0);
     signal s_d_m: std_logic_vector(25 downto 0);
 
-    signal s_s_s: std_logic;
-    signal s_s_e: std_logic_vector(7 downto 0);
     signal s_s_m: std_logic_vector(25 downto 0);
 
     signal s_res_m: std_logic_vector(25 downto 0);
@@ -44,7 +41,7 @@ begin
     s_inf_d <= '1' when p_opd(30 downto 23) = "11111111" else '0';
     s_inf_s <= '1' when p_ops(30 downto 23) = "11111111" else '0';
 
-    process (p_cl, p_cmd, p_ctrl, p_opd, p_ops, s_res_m) is
+    process (p_cl, p_cmd, p_ctrl, p_opd, p_ops, s_res_m, s_en) is
         variable v_d_s: std_logic;
         variable v_d_e: std_logic_vector(7 downto 0);
         variable v_d_m: std_logic_vector(25 downto 0);
@@ -91,12 +88,9 @@ begin
         end if;
 
         if p_cl'event and p_cl = '1' and p_ctrl(9) = '1' then -- CU1
-            s_d_s <= v_d_s;
             s_d_e <= v_d_e;
             s_d_m <= v_d_m;
 
-            s_s_s <= v_s_s;
-            s_s_e <= v_s_e;
             s_s_m <= v_s_m;
 
             v_ctr := to_integer(unsigned(v_d_e)) - to_integer(unsigned(v_s_e));
@@ -123,7 +117,7 @@ begin
         end if;
     end process;
 
-    process (s_d_e, s_res_m, s_zero_d, s_zero_s) is
+    process (s_d_e, s_res_m, s_zero_d, s_zero_s, p_ops, p_opd) is
         variable v_res_m: std_logic_vector(25 downto 0);
     begin
         v_res_m := s_res_m;
