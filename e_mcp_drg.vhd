@@ -69,7 +69,7 @@ begin
         p_r  => '0',
         p_s  => '0',
         p_cl => p_cl,
-        p_en => p_ctrl(2), -- RDRG
+        p_en => p_ctrl(2), -- RDR
         p_q  => s_en
     );
 

@@ -14,15 +14,18 @@ port (
 end entity e_mcp_cu_i_chs;
 
 architecture rtl of e_mcp_cu_i_chs is
-    signal s_q: std_logic_vector(31 downto 0);
+    signal s_np: std_logic;
+    signal s_q:  std_logic_vector(31 downto 0);
 begin
+    s_np <= not p_opd(31);
+
     l_chs: entity work.c_chs
     generic map (
         g_width => 32
     )
     port map (
         p_d  => p_opd,
-        p_np => '1',
+        p_np => s_np,
         p_q  => s_q
     );
 

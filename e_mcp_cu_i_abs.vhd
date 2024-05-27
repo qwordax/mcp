@@ -22,7 +22,7 @@ begin
     )
     port map (
         p_d  => p_opd,
-        p_np => p_opd(31),
+        p_np => '0',
         p_q  => s_q
     );
 
