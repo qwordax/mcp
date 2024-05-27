@@ -26,7 +26,7 @@ architecture rtl of e_mcp_cu_f_div is
     signal s_inf_d: std_logic;
     signal s_inf_s: std_logic;
 
-    signal s_d_m: std_logic_vector(49 downto 0);
+    signal s_d_m: std_logic_vector(24 downto 0);
     signal s_s_m: std_logic_vector(24 downto 0);
 
     signal s_ds_m: std_logic_vector(24 downto 0);
@@ -67,8 +67,7 @@ begin
             s_res_s <= v_d_s xor v_s_s;
             s_res_e <= v_d_e - v_s_e + "01111111";
 
-            s_d_m(49 downto 25) <= v_d_m;
-            s_d_m(24 downto  0) <= (others => '0');
+            s_d_m <= v_d_m;
             s_s_m <= v_s_m;
 
             v_ctr := 51;
@@ -98,7 +97,7 @@ begin
 
     l_div: entity work.c_div
     generic map (
-        g_width => 50
+        g_width => 25
     )
     port map (
         p_a  => s_d_m,
