@@ -63,7 +63,7 @@ begin
         s_st <= '0';
         wait for 100 ns;
 
-        s_op <= "101010"; -- FADD 5, 3
+        s_op <= "101011"; -- FSUB 5, 3
         s_rd <= "101";
         s_rs <= "011";
         s_d  <= (others => '0');

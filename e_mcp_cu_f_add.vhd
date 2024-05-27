@@ -118,8 +118,10 @@ begin
     end process;
 
     process (s_d_e, s_res_m, s_zero_d, s_zero_s, p_ops, p_opd) is
+        variable v_res_s: std_logic;
         variable v_res_m: std_logic_vector(25 downto 0);
     begin
+        v_res_s := s_res_m(25);
         v_res_m := s_res_m;
 
         if s_res_m(25) = '1' then
@@ -133,7 +135,7 @@ begin
         elsif s_zero_d = '1' and s_zero_s = '1' then
             s_q <= "00000000000000000000000000000000";
         else
-            s_q(31)           <= v_res_m(25);
+            s_q(31)           <= v_res_s;
             s_q(30 downto 23) <= s_d_e;
             s_q(22 downto 0)  <= v_res_m(22 downto 0);
         end if;

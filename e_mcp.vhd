@@ -22,8 +22,6 @@ architecture rtl of e_mcp is
     signal s_op: std_logic_vector(5 downto 0);
     signal s_rd: std_logic_vector(2 downto 0);
     signal s_rs: std_logic_vector(2 downto 0);
-    signal s_d:  std_logic_vector(31 downto 0);
-    signal s_q:  std_logic_vector(31 downto 0);
     signal s_fl: std_logic_vector(8 downto 0);
     signal s_ex: std_logic_vector(3 downto 0);
 
