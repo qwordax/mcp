@@ -26,14 +26,14 @@ architecture rtl of e_mcp_cu_f_div is
     signal s_inf_d: std_logic;
     signal s_inf_s: std_logic;
 
-    signal s_d_m: std_logic_vector(24 downto 0);
-    signal s_s_m: std_logic_vector(24 downto 0);
+    signal s_d_m: std_logic_vector(49 downto 0);
+    signal s_s_m: std_logic_vector(49 downto 0);
 
-    signal s_ds_m: std_logic_vector(24 downto 0);
+    signal s_ds_m: std_logic_vector(49 downto 0);
 
     signal s_res_s: std_logic;
     signal s_res_e: std_logic_vector(7 downto 0);
-    signal s_res_m: std_logic_vector(24 downto 0);
+    signal s_res_m: std_logic_vector(49 downto 0);
 
     signal s_q: std_logic_vector(31 downto 0);
 begin
@@ -67,16 +67,19 @@ begin
             s_res_s <= v_d_s xor v_s_s;
             s_res_e <= v_d_e - v_s_e + "01111111";
 
-            s_d_m <= v_d_m;
-            s_s_m <= v_s_m;
+            s_d_m(49 downto 25) <= v_d_m;
+            s_d_m(24 downto 0)  <= (others => '0');
 
-            v_ctr := 51;
+            s_s_m(49 downto 25) <= (others => '0');
+            s_s_m(24 downto 0)  <= v_s_m;
+
+            v_ctr := 101;
         elsif p_cl'event and p_cl = '1' and p_ctrl(10) = '1' then -- CU2
             v_ctr := v_ctr - 1;
         elsif p_cl'event and p_cl = '1' and p_ctrl(11) = '1' then -- CU3
             s_res_m <= s_ds_m;
         elsif p_cl'event and p_cl = '1' and p_ctrl(12) = '1' then -- CU4
-            s_res_m <= s_res_m(23 downto 0) & '0';
+            s_res_m <= s_res_m(48 downto 0) & '0';
             s_res_e <= s_res_e - '1';
         end if;
 
@@ -86,7 +89,7 @@ begin
             p_ex(1) <= '0';
         end if;
 
-        if s_res_m(24 downto 23) /= "01" and p_cmd(35) = '1' then
+        if s_res_m(26 downto 25) /= "01" and p_cmd(35) = '1' then
             p_ex(3) <= '1';
         else
             p_ex(3) <= '0';
@@ -97,7 +100,7 @@ begin
 
     l_div: entity work.c_div
     generic map (
-        g_width => 25
+        g_width => 50
     )
     port map (
         p_a  => s_d_m,
@@ -114,7 +117,7 @@ begin
         else
             s_q(31)           <= s_res_s;
             s_q(30 downto 23) <= s_res_e;
-            s_q(22 downto 0)  <= s_res_m(22 downto 0);
+            s_q(22 downto 0)  <= s_res_m(24 downto 2);
         end if;
     end process;
 
