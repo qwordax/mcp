@@ -6,6 +6,7 @@ entity e_mcp_in is
 port (
     p_d:    in  std_logic_vector(31 downto 0);
     p_cl:   in  std_logic;
+    p_en:   in  std_logic;
     p_ctrl: in  std_logic_vector(13 downto 0);
     p_q:    out std_logic_vector(31 downto 0)
 );
@@ -24,7 +25,7 @@ begin
         p_s  => '0',
         p_d  => p_d,
         p_cl => p_cl,
-        p_en => p_ctrl(0), -- ST
+        p_en => p_en,
         p_q  => s_d
     );
 
@@ -37,13 +38,15 @@ begin
         p_q  => s_en
     );
 
-    l_tri: entity work.c_tri
-    generic map (
-        g_width => 32
-    )
-    port map (
-        p_d  => s_d,
-        p_en => s_en,
-        p_q  => p_q
-    );
+--    l_tri: entity work.c_tri
+--    generic map (
+--        g_width => 32
+--    )
+--    port map (
+--        p_d  => s_d,
+--        p_en => s_en,
+--        p_q  => p_q
+--    );
+
+    p_q <= s_d when s_en = '1' else (others => '0');
 end architecture rtl;

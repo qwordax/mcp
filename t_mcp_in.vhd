@@ -15,6 +15,7 @@ begin
     port map (
         p_d    => s_d,
         p_cl   => s_cl,
+        p_en   => '1',
         p_ctrl => s_ctrl,
         p_q    => s_q
     );

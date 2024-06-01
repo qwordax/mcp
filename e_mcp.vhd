@@ -31,6 +31,11 @@ architecture rtl of e_mcp is
 
     signal s_bus_d:    std_logic_vector(31 downto 0);
     signal s_bus_ctrl: std_logic_vector(13 downto 0);
+
+    signal s_in_q:    std_logic_vector(31 downto 0);
+    signal s_cu_q:    std_logic_vector(31 downto 0);
+    signal s_const_q: std_logic_vector(31 downto 0);
+    signal s_drg_q:   std_logic_vector(31 downto 0);
 begin
     l_mcp_op: entity work.c_rg
     generic map (
@@ -75,9 +80,9 @@ begin
     port map (
         p_r  => s_bus_ctrl(13), -- BSY
         p_s  => '0',
-        p_d  => '1',
+        p_d  => s_en_p,
         p_cl => p_st,
-        p_en => '1',
+        p_en => s_en_p,
         p_q  => s_en
     );
 
@@ -102,8 +107,9 @@ begin
     port map (
         p_d    => p_d,
         p_cl   => p_cl,
+        p_en   => s_en_p,
         p_ctrl => s_bus_ctrl,
-        p_q    => s_bus_d
+        p_q    => s_in_q
     );
 
     l_mcp_cu: entity work.e_mcp_cu
@@ -113,7 +119,7 @@ begin
         p_cmd  => s_cmd,
         p_cl   => p_cl,
         p_ctrl => s_bus_ctrl,
-        p_q    => s_bus_d,
+        p_q    => s_cu_q,
         p_fl   => s_fl,
         p_ex   => s_ex
     );
@@ -123,7 +129,7 @@ begin
         p_cmd  => s_cmd,
         p_cl   => p_cl,
         p_ctrl => s_bus_ctrl,
-        p_q    => s_bus_d
+        p_q    => s_const_q
     );
 
     l_mcp_drg: entity work.e_mcp_drg
@@ -133,6 +139,7 @@ begin
         p_cl   => p_cl,
         p_ctrl => s_bus_ctrl,
         p_d    => s_bus_d,
+        p_q    => s_drg_q,
         p_opd  => s_opd,
         p_ops  => s_ops
     );
@@ -144,6 +151,8 @@ begin
         p_ctrl => s_bus_ctrl,
         p_q    => p_q
     );
+
+    s_bus_d <= s_in_q or s_cu_q or s_const_q or s_drg_q;
 
     l_fl: entity work.c_rg
     generic map (

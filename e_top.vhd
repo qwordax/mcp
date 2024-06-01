@@ -126,6 +126,7 @@ begin
     port map (
         p_r  => s_k(2),
         p_s  => s_k(3),
+        p_cl => s_lcd_cl,
         p_en => s_mode(2),
         p_q  => s_mcp_d,
         p_cs => s_sd_cs,

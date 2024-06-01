@@ -283,13 +283,15 @@ begin
         p_q  => s_en
     );
 
-    l_tri: entity work.c_tri
-    generic map (
-        g_width => 32
-    )
-    port map (
-        p_d  => s_q,
-        p_en => s_en,
-        p_q  => p_q
-    );
+--    l_tri: entity work.c_tri
+--    generic map (
+--        g_width => 32
+--    )
+--    port map (
+--        p_d  => s_q,
+--        p_en => s_en,
+--        p_q  => p_q
+--    );
+
+    p_q <= s_q when s_en = '1' else (others => '0');
 end architecture rtl;
